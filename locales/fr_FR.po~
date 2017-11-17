@@ -1,0 +1,312 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Nelly Mahu-Lasson <glpi@ll_experts.com>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: GLPI Project - Plugin Geststock\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-08-09 15:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Nelly Mahu-Lasson <glpi@ll-experts.com>\n"
+"Language-Team: French (France)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr_FR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: hook.php:172 inc/specification.class.php:87
+msgid "Length"
+msgstr "Longueur"
+
+#: hook.php:180 inc/specification.class.php:93
+msgid "Width"
+msgstr "Largeur"
+
+#: hook.php:185 inc/specification.class.php:99
+msgid "Height"
+msgstr "Hauteur"
+
+#: hook.php:190 inc/reservation_item.class.php:268
+#: inc/specification.class.php:105
+msgid "Weight"
+msgstr "Poids"
+
+#: hook.php:195 inc/reservation_item.class.php:267
+#: inc/specification.class.php:111
+msgid "Volume"
+msgstr "Volume"
+
+#: setup.php:74 inc/gestion.class.php:47 inc/menu.class.php:39
+#: inc/profile.class.php:131
+msgid "Stock gestion"
+msgstr "Gestion du stock"
+
+#: front/reservation_item.form.php:99
+msgid "The item with this number is not free"
+msgstr "L'élément avec ce numéro n'est pas au status disponible"
+
+#: front/reservation_item.form.php:104
+#, php-format
+msgid "Item not found with this %s number"
+msgstr "Elément non trouvé avec ce numéro %s"
+
+#: front/reservation_item.form.php:129 front/reservation_item.form.php:204
+msgid "Number selected different from number reserved"
+msgstr "Nombre sélectionné différent du nombre réservé"
+
+#: front/reservation_item.form.php:217 inc/reservation.class.php:165
+msgid "Thanks to specify an asset item type"
+msgstr "Merci de sélectionner un type d'élément"
+
+#: front/reservation_item.form.php:222 inc/reservation.class.php:171
+msgid "Thanks to specify an asset model"
+msgstr "Merci de sélectionner un modèle"
+
+#: inc/config.class.php:85
+msgid "Entity of stock"
+msgstr "Entité gérant le stock"
+
+#: inc/gestion.class.php:120
+msgid "See stock"
+msgstr "Voir le stock"
+
+#: inc/gestion.class.php:135
+msgid "Export models in stock to TOVA"
+msgstr "Exporter les modèles en stock vers TOVA"
+
+#: inc/gestion.class.php:146
+msgid "Number in stock"
+msgstr "En stock"
+
+#: inc/gestion.class.php:147
+msgid "Reserved in stock"
+msgstr "Réservé en stock"
+
+#: inc/gestion.class.php:148
+msgid "Reserved in transit"
+msgstr "Réservé en transit"
+
+#: inc/gestion.class.php:148
+msgid "Number free"
+msgstr "Disponible"
+
+#: inc/menu.class.php:41 inc/profile.class.php:128
+#: inc/reservation.class.php:116 inc/reservation.class.php:448
+#: inc/reservation_item.class.php:282
+msgid "Stock reservation"
+msgid_plural "Stock reservations"
+msgstr[0] "Réservation de stock"
+msgstr[1] "Réservations de stock"
+
+#: inc/reservation.class.php:72 inc/reservation.class.php:106
+msgctxt "status"
+msgid "Asked"
+msgstr "Demandé"
+
+#: inc/reservation.class.php:75 inc/reservation.class.php:107
+msgctxt "status"
+msgid "Waiting"
+msgstr "En attente"
+
+#: inc/reservation.class.php:78 inc/reservation.class.php:109
+msgctxt "status"
+msgid "Receipted"
+msgstr "Réceptionné"
+
+#: inc/reservation.class.php:81 inc/reservation.class.php:108
+msgctxt "status"
+msgid "Refused"
+msgstr "Refusé"
+
+#: inc/reservation.class.php:135 inc/reservation.class.php:181
+msgid "Ticket is mandatory to make a reservation"
+msgstr "Le ticket est obligatoire pour faire une réservation"
+
+#: inc/reservation.class.php:141 inc/reservation.class.php:186
+msgid "Entity is mandatory to make a reservation"
+msgstr "L'entité est obligatoire pour faire une réservation"
+
+#: inc/reservation.class.php:147 inc/reservation.class.php:191
+msgid "Location is mandatory to make a reservation"
+msgstr "Le lieu est obligatoire pour faire une réservation"
+
+#: inc/reservation.class.php:176
+msgid "Thanks to specify number of items whished"
+msgstr "Merci de spécifié le nombre d'éléments désiré"
+
+#: inc/reservation.class.php:268
+msgid "Stock location"
+msgstr "Lieu du stock"
+
+#: inc/reservation.class.php:281 inc/reservation.class.php:300
+#: inc/reservation.class.php:937
+msgid "Delivery entity"
+msgstr "Entité de réception"
+
+#: inc/reservation.class.php:286 inc/reservation.class.php:300
+#: inc/reservation.class.php:941
+msgid "Delivery location"
+msgstr "Lieu de livraison"
+
+#: inc/reservation.class.php:308 inc/reservation.class.php:952
+#: inc/reservation_item.class.php:194
+msgid "Delivery date"
+msgstr "Date de rapatriement"
+
+#: inc/reservation.class.php:281 inc/reservation_item.class.php:198
+msgid "Tova date"
+msgstr "Date de livraison (remise)"
+
+#: inc/reservation.class.php:288 inc/reservation_item.class.php:203
+msgid "Suitcase number"
+msgstr "N° de valise"
+
+#: inc/reservation.class.php:294 inc/reservation_item.class.php:208
+msgid "Suitcase type"
+msgstr "Type de valise"
+
+#: inc/reservation.class.php:359 inc/reservation.class.php:554
+msgid "Number of packages"
+msgstr "Nombre de colis"
+
+#: inc/reservation.class.php:495 inc/reservation.class.php:984
+#: inc/reservation_item.class.php:212
+msgid "Receipt date"
+msgstr "Date de réception"
+
+#: inc/reservation.class.php:678
+msgid "No free item"
+msgstr "Aucun élément disponible pour ce modèle"
+
+#: inc/reservation.class.php:827
+msgid "can't create a ticket for ticket type incident"
+msgstr "Impossible de créer une réservation pour un ticket de type Incident"
+
+#: inc/reservation.class.php:832
+msgid "Reservation present in dustbin"
+msgstr "Réservation dans la corbeille"
+
+#: inc/reservation.class.php:840
+msgid "Add a reservation"
+msgstr "Ajouter une réservation"
+
+#: inc/reservation.class.php:847
+msgid "Create a reservation from this ticket"
+msgstr "Créer une réservation depuis ce ticket"
+
+#: inc/reservation.class.php:869 inc/reservation.class.php:889
+msgctxt "status"
+msgid "Accompanied"
+msgstr "Accompagnée"
+
+#: inc/reservation.class.php:870 inc/reservation.class.php:892
+msgctxt "status"
+msgid "Accompanied RAILWAY"
+msgstr "Accompagnée FER"
+
+#: inc/reservation.class.php:871 inc/reservation.class.php:895
+msgctxt "status"
+msgid "Flight department"
+msgstr "Avion du département"
+
+#: inc/reservation.class.php:872 inc/reservation.class.php:898
+msgctxt "status"
+msgid "Mail"
+msgstr "Courrier"
+
+#: inc/reservation.class.php:873 inc/reservation.class.php:901
+msgctxt "status"
+msgid "Accompanied mail"
+msgstr "Courrier accompagné"
+
+#: inc/reservation.class.php:874 inc/reservation.class.php:904
+msgctxt "status"
+msgid "Secure freight"
+msgstr "Fret sécurisé"
+
+#: inc/reservation.class.php:875 inc/reservation.class.php:907
+msgctxt "status"
+msgid "Freight"
+msgstr "Fret"
+
+#: inc/reservation.class.php:876 inc/reservation.class.php:910
+msgctxt "status"
+msgid "Freight RAILWAY"
+msgstr "Fret FER"
+
+#: inc/reservation.class.php:877 inc/reservation.class.php:913
+msgctxt "status"
+msgid "Freight PTT"
+msgstr "Fret PTT"
+
+#: inc/reservation.class.php:878 inc/reservation.class.php:916
+msgctxt "status"
+msgid "Nantes shuttle"
+msgstr "Navette Nantes"
+
+#: inc/reservation.class.php:879 inc/reservation.class.php:919
+msgctxt "status"
+msgid "Road"
+msgstr "Route"
+
+#: inc/reservation_item.class.php:236
+msgid "Transfert items"
+msgstr "Sortir du stock les éléments"
+
+#: inc/reservation_item.class.php:264 inc/reservation_item.class.php:786
+msgid "Number reserved"
+msgstr "Quantité réservée"
+
+#: inc/reservation_item.class.php:250 inc/reservation_item.class.php:667
+#: inc/reservation_item.class.php:753
+msgid "Actual location"
+msgstr "Lieu de stockage actuel"
+
+#: inc/reservation_item.class.php:251 inc/reservation_item.class.php:669
+#: inc/reservation_item.class.php:753
+msgid "New location"
+msgstr "Prochain lieu de stockage"
+
+#: inc/reservation_item.class.php:254
+msgid "Total volume"
+msgstr "Volume total"
+
+#: inc/reservation_item.class.php:255
+msgid "Total weight"
+msgstr "Poids total"
+
+#: inc/reservation_item.class.php:401
+msgid "Select items to send"
+msgstr "Choisir les éléments à envoyer"
+
+#: inc/reservation_item.class.php:431
+msgid "Selection by inventory number"
+msgstr "Sélection n°2"
+
+#: inc/reservation_item.class.php:432
+msgid "Selection limited"
+msgstr "Sélection n°1"
+
+#: inc/reservation_item.class.php:433
+msgid "Selection by file"
+msgstr "Sélection par injection d'un fichier"
+
+#: inc/reservation_item.class.php:455
+msgid "Upload files"
+msgstr "Charger le(s) fichier(s)"
+
+#: inc/specification.class.php:50
+msgid "Specifications"
+msgstr "Spécifications"
+
+#: inc/specification.class.php:113
+msgid "can't be calculate"
+msgstr "élément manquants pour le calcul automatique"
+
+
+
+
