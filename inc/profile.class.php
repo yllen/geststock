@@ -73,17 +73,20 @@ class PluginGeststockProfile extends Profile {
    static function addDefaultProfileInfos($profiles_id, $rights, $drop_existing = false) {
 
       $profileRight = new ProfileRight();
+      $dbu          = new DbUtils();
       foreach ($rights as $right => $value) {
-         if (countElementsInTable('glpi_profilerights',
-                                   "`profiles_id`='$profiles_id' AND `name`='$right'")
+         if ($dbu->countElementsInTable('glpi_profilerights',
+                                        ['profiles_id' => $profiles_id,
+                                         'name'        => $right])
              && $drop_existing) {
 
             $profileRight->deleteByCriteria(['profiles_id' => $profiles_id,
                                              'name'        => $right]);
          }
 
-         if (!countElementsInTable('glpi_profilerights',
-                                   "`profiles_id`='$profiles_id' AND `name`='$right'")) {
+         if (!$dbu->countElementsInTable('glpi_profilerights',
+                                         ['profiles_id' => $profiles_id,
+                                          'name'        => $right])) {
             $myright['profiles_id'] = $profiles_id;
             $myright['name']        = $right;
             $myright['rights']      = $value;
@@ -145,11 +148,12 @@ class PluginGeststockProfile extends Profile {
       global $DB;
 
       $profile = new self();
+      $dbu     = new DbUtils();
 
       //Add new rights in glpi_profilerights table
       foreach ($profile->getAllRights() as $data) {
-         if (countElementsInTable("glpi_profilerights",
-                                  "`name` = '".$data['field']."'") == 0) {
+         if ($dbu->countElementsInTable("glpi_profilerights",
+                                        ['name' => $data['field']]) == 0) {
             ProfileRight::addProfileRights([$data['field']]);
          }
       }

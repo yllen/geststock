@@ -89,6 +89,7 @@ class PluginGeststockGestion extends CommonDBTM {
    static function showStock($entity) {
       global $DB, $CFG_GLPI;
 
+      $dbu = new DbUtils();
       $buttons = [];
       $buttons["gestion.php?generate=1"]= __('Export models in stock to TOVA', 'geststock');
       Html::displayTitle('', '', '', $buttons);
@@ -117,12 +118,13 @@ class PluginGeststockGestion extends CommonDBTM {
             $tabl = strtolower($type);
             $item = new $type();
 
-            $nb = countElementsInTable($item->getTable(),
-                                       "`is_deleted` = 0 AND `is_template` = 0
-                                         AND `entities_id` = ".$entity."
-                                         AND `locations_id` = ".$location['id']."
-                                         AND `states_id` IN (".$config->fields['stock_status'].",
-                                                             ".$config->fields['transit_status'].")");
+            $nb = $dbu->countElementsInTable($item->getTable(),
+                                             ['is_deleted'   => 0,
+                                              'is_template'  => 0,
+                                              'entities_id'  => $entity,
+                                              'locations_id' => $location['id'],
+                                              'states_id'    => [$config->fields['stock_status'],
+                                                                 $config->fields['transit_status']]]);
             $totnb += $nb;
             if ($nb > 0) {
                if ($head) {
@@ -172,7 +174,8 @@ class PluginGeststockGestion extends CommonDBTM {
    static function GenerateReport($entity) {
       global $DB, $CFG_GLPI;
 
-      $text = '';
+      $text    = '';
+      $dbu     = new DbUtils();
       $config  = new PluginGeststockConfig();
       $config->getFromDB(1);
       foreach ($CFG_GLPI["asset_types"] as $type) {
@@ -183,12 +186,13 @@ class PluginGeststockGestion extends CommonDBTM {
 
          foreach ($DB->request($tablmodel) as $model) {
             if ($model['id']) {
-               $nb = countElementsInTable($item->getTable(),
-                                          "`is_deleted` = 0 AND `is_template` = 0
-                                            AND `entities_id` = ".$entity."
-                                            AND `".$modelid."` = ".$model['id']."
-                                            AND `states_id` IN (".$config->fields['stock_status'].",
-                                                                ".$config->fields['transit_status'].")");
+               $nb = $dbu->countElementsInTable($item->getTable(),
+                                                ['is_deleted'  => 0,
+                                                 'is_template' => 0,
+                                                 'entities_id' => $entity,
+                                                 $modelid      => $model['id'],
+                                                 'states_id'   => [$config->fields['stock_status'],
+                                                                   $config->fields['transit_status']]]);
 
                if ($nb > 0) {
                   $code = strtolower(substr(strrchr(Dropdown::getDropdownName($tablmodel, $model['id']),

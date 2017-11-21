@@ -74,8 +74,6 @@ function plugin_init_geststock() {
    }
 
    $PLUGIN_HOOKS['plugin_pdf']['PluginGeststockReservation'] = 'PluginGeststockReservationPDF';
-
-   $PLUGIN_HOOKS['post_init']['geststock'] = 'plugin_geststock_postinit';
 }
 
 
@@ -83,18 +81,18 @@ function plugin_init_geststock() {
 function plugin_version_geststock() {
 
    return ['name'           => __('Stock gestion', 'geststock'),
-           'version'        => '1.0.0',
+           'version'        => '1.1.0',
            'author'         => 'Nelly Mahu-Lasson',
            'license'        => 'GPLv3+',
            'homepage'       => '',
-           'minGlpiVersion' => '9.1'];
+           'minGlpiVersion' => '9.2'];
 }
 
 
 function plugin_geststock_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION,'9.1','lt') || version_compare(GLPI_VERSION,'9.3','ge')) {
-      echo "This plugin requires GLPI >= 9.1 and GLPI < 9.3";
+   if (version_compare(GLPI_VERSION,'9.2','lt') || version_compare(GLPI_VERSION,'9.3','ge')) {
+      echo "This plugin requires GLPI >= 9.2 and GLPI < 9.3";
       return false;
    }
    return true;

@@ -55,13 +55,14 @@ class PluginGeststockReservation_Item extends CommonDBChild {
    static function countForGeststock(PluginGeststockReservation $item) {
       global $CFG_GLPI;
 
+      $dbu = new DbUtils();
       $types = implode("','", $CFG_GLPI['asset_types']);
       if (empty($types)) {
          return 0;
       }
-      return countElementsInTable('glpi_plugin_geststock_reservations_items',
-                                  "`itemtype` IN ('".$types."')
-                                   AND `plugin_geststock_reservations_id` = '".$item->getID()."'");
+      return $dbu->countElementsInTable('glpi_plugin_geststock_reservations_items',
+                                        ['itemtype'                         => [$types],
+                                         'plugin_geststock_reservations_id' => $item->getID()]);
    }
 
 
@@ -86,40 +87,42 @@ class PluginGeststockReservation_Item extends CommonDBChild {
    static function countStock($type, $model, $entity, $location) {
 
       $item = new $type();
+      $dbu  = new DbUtils();
       $itemkey = strtolower($type)."models_id";
       if ($type == "PluginSimcardSimcard") {
          $itemkey = 'plugin_simcard_simcardtypes_id';
       }
       $config  = new PluginGeststockConfig();
       $config->getFromDB(1);
-      return countElementsInTable($item->getTable(),
-                                  "`$itemkey` = '".$model."'
-                                    AND `is_deleted` = 0
-                                    AND `is_template` = 0
-                                    AND `entities_id` = ".$entity."
-                                    AND `locations_id` = ".$location."
-                                    AND `states_id` IN (".$config->fields['stock_status'].",
-                                                        ".$config->fields['transit_status'].")");
+      return $dbu->countElementsInTable($item->getTable(),
+                                        [$itemkey       => $model,
+                                         'is_deleted'   => 0,
+                                         'is_template'  => 0,
+                                         'entities_id'  => $entity,
+                                         'locations_id' => $location,
+                                         'states_id'    => [$config->fields['stock_status'],
+                                                            $config->fields['transit_status']]]);
    }
 
 
    static function countTransit($type, $model, $entity, $location) {
       global $DB;
 
-      $item = new $type();
+      $item    = new $type();
+      $dbu     = new DbUtils();
       $itemkey = strtolower($type)."models_id";
       if ($item == "PluginSimcardSimcard") {
          $itemkey = 'plugin_simcard_simcardtypes_id ';
       }
       $config  = new PluginGeststockConfig();
       $config->getFromDB(1);
-      return countElementsInTable($item->getTable(),
-                                   "`$itemkey` = '".$model."'
-                                    AND `is_deleted` = 0
-                                    AND `is_template` = 0
-                                    AND `entities_id` = ".$entity."
-                                    AND `locations_id` = ".$location."
-                                    AND `states_id` = ".$config->fields['transit_status']);
+      return $dbu->countElementsInTable($item->getTable(),
+                                        [$itemkey        => $model,
+                                         'is_deleted'    => 0,
+                                         'is_template'   => 0,
+                                         'entities_id'   => $entity,
+                                         'locations_id'  => $location,
+                                         'states_id'     => $config->fields['transit_status']]);
    }
 
 
@@ -165,6 +168,8 @@ class PluginGeststockReservation_Item extends CommonDBChild {
 
       $instID = $resa->getField('id');
 
+      $dbu = new DbUtils();
+
       if (!$resa->can($instID, READ)) {
          return false;
       }
@@ -175,12 +180,12 @@ class PluginGeststockReservation_Item extends CommonDBChild {
       $canedit   = Session::haveRight(self::$rightname, CREATE);
       $canupdate = Session::haveRight(self::$rightname, UPDATE);
 
-      $query = "SELECT DISTINCT `itemtype`
-                FROM `glpi_plugin_geststock_reservations_items`
-                WHERE `plugin_geststock_reservations_id` = '".$instID."'
-                ORDER BY `itemtype`";
-      $result = $DB->query($query);
-      $number = $DB->numrows($result);
+      $query = ['SELECT DISTINCT' => 'itemtype',
+               'FROM'            => 'glpi_plugin_geststock_reservations_items',
+               'WHERE'           => ['plugin_geststock_reservations_id' => $instID],
+               'ORDER'           => 'itemtype'];
+      $result = $DB->request($query);
+      $number = count($result);
 
       if ($canedit
           && ($resa->fields['status'] < PluginGeststockReservation::RECEIPT)
@@ -210,12 +215,6 @@ class PluginGeststockReservation_Item extends CommonDBChild {
       echo "<tr class='tab_bg_1'>";
       $link = $resa->getLinkURL();
       echo "<td><a  href='$link'>".__('Reservation')."</a></td>";
-      echo "<td class='green'>".sprintf(__('%1$s: %2$s'), "<b>".__('Entity')."</b>",
-                          Dropdown::getDropdownName('glpi_entities', $resa->fields['entities_id_deliv']))."<br /> ".
-                  sprintf(__('%1$s: %2$s'), "<b>".__('Location')."</b>",
-                          Dropdown::getDropdownName('glpi_locations', $resa->fields['locations_id']))." <br /> ".
-                  sprintf(__('%1$s: %2$s'), "<b>".__('Status')."</b>",
-                          PluginGeststockReservation::getStatusName($resa->fields['status']))."</td>";
       echo "</td></tr>";
 
       echo "<td>".__('Ticket')."</td>";
@@ -252,24 +251,7 @@ class PluginGeststockReservation_Item extends CommonDBChild {
 
       echo "<div class='spaced'>";
 
-      $nbre = new PluginGeststockReservation_Item_Number();
-      $display = $empty = false;
-      foreach ($DB->request("glpi_plugin_geststock_reservations_items",
-                            ['plugin_geststock_reservations_id' => $resa->fields['id']]) as $resait) {
-         $resaitem = $resait['id'];
-         if ($nbre->getFromDBByQuery("WHERE `plugin_geststock_reservations_items_id` = $resaitem")) {
-            $num  = importArrayFromDB($nbre->fields['otherserial']);
-            if (count($num) == $resait['nbrereserv']) {
-               $display = true;
-            } else {
-               $display = false;
-            }
-         } else {
-            $empty = true;
-         }
-      }
-      if (!$empty && $display
-          && Session::haveRight(self::$rightname, PluginGeststockGestion::TRANSFERT)
+      if (Session::haveRight(self::$rightname, PluginGeststockGestion::TRANSFERT)
           && ($resa->fields['status'] < PluginGeststockReservation::RECEIPT)
           && self::canTransfertItem($resa->fields['id'])) {
           echo "<a class='vsubmit' href='".Toolbox::getItemTypeFormURL(__CLASS__)."?transfert=".
@@ -313,8 +295,9 @@ class PluginGeststockReservation_Item extends CommonDBChild {
       echo $header_begin.$header_top.$header_end;
 
       for ($i=0 ; $i < $number ; $i++) {
-         $type = $DB->result($result, $i, "itemtype");
-         if (!($item = getItemForItemtype($type))) {
+         $row = $result->next();
+         $type = $row['itemtype'];
+         if (!($item = $dbu->getItemForItemtype($type))) {
            continue;
          }
 
@@ -335,13 +318,13 @@ class PluginGeststockReservation_Item extends CommonDBChild {
                                  = '".$instID."'
                    ORDER BY `$tabl`.`id`";
 
-         if ($result_linked = $DB->query($query)) {
-            if ($DB->numrows($result_linked)) {
+         if ($result_linked = $DB->request($query)) {
+            if (counts($result_linked)) {
                Session::initNavigateListItems($type,
                                              _n('Stock reservation', 'Stock reservations', 2,
                                                 'geststock')." = ".$resa->getNameID());
 
-               while ($data = $DB->fetch_assoc($result_linked)) {
+               while ($data = $result_linked->next()) {
                   $item->getFromDB($data["id"]);
                   Session::addToNavigateListItems($type,$data["id"]);
                   if ($_SESSION["glpiis_ids_visible"] || empty($data["name"])) {
@@ -398,8 +381,8 @@ class PluginGeststockReservation_Item extends CommonDBChild {
                   $totweight += $weight;
                   echo "<td class='center'>".($volume > 0 ? $volume : "/")."</td>";
                   echo "<td class='center'>".($weight > 0 ? $weight : "/")."</td>";
-                  if (countElementsInTable('glpi_plugin_geststock_reservations_items',
-                                           "`plugin_geststock_reservations_id` = ".$resa->fields['id'])
+                  if ($dbu->countElementsInTable('glpi_plugin_geststock_reservations_items',
+                                                 ['plugin_geststock_reservations_id' => $resa->fields['id']])
                       == $j) {
                   echo "<td class='center'>".($totvolume > 0 ? $totvolume : "/")."</td>";
                   echo "<td class='center'>".($totweight > 0 ? $totweight : "/")."</td>";
@@ -455,90 +438,81 @@ class PluginGeststockReservation_Item extends CommonDBChild {
          echo "<form name='reservationitem_form$rand' id='reservationitem_form$rand'
                 enctype='multipart/form-data' method='post'
                 action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
-      }
-      $config = new PluginGeststockConfig();
-      $config->getFromDB(1);
-      $entity = $config->fields['entities_id_stock'];
-      echo "<table class='tab_cadre_fixe'>";
-      echo "<tr class='tab_bg_2'><th colspan='4'>";
-      if ($canupdate) {
-         echo __('Select items to send', 'geststock');
-      } else {
-         echo __('Items sended', 'geststock');
-      }
-      echo "</th></tr>";
 
-      foreach ($DB->request('glpi_plugin_geststock_reservations_items',
-                            ['plugin_geststock_reservations_id' => $instID]) as $resaitem) {
+         $config = new PluginGeststockConfig();
+         $config->getFromDB(1);
+         $entity = $config->fields['entities_id_stock'];
+         echo "<table class='tab_cadre_fixe'>";
+         echo "<tr class='tab_bg_2'>";
+         echo "<th colspan='4'>".__('Select items to send', 'geststock')."</th></tr>";
 
-         $itemtype = $resaitem['itemtype'];
-         $item     = new $itemtype();
-         $stock    = $resaitem['locations_id_stock'];
-         $model    = $resaitem['models_id'];
-         $table    = getTableForItemType($itemtype);
-         $name     = strtolower($itemtype);
-         $tab      = "glpi_".$name."models";
-         if ($itemtype == "PluginSimcardSimcard") {
-            $tab = 'glpi_plugin_simcard_simcardtypes';
-         }
-         $reserv   = $resaitem['nbrereserv'];
+         $dbu = new DbUtils();
+         foreach ($DB->request('glpi_plugin_geststock_reservations_items',
+                               ['plugin_geststock_reservations_id' => $instID]) as $resaitem) {
 
-         if ($config->fields['criterion'] == 'serial') {
-            $label = __('Serial number');
-         } else {
-            $label = __('Inventory number');
-         }
-         echo "<tr>";
-         echo "<th>". __('Model')."</th>";
-         if ($canupdate) {
+            $itemtype = $resaitem['itemtype'];
+            $item     = new $itemtype();
+            $stock    = $resaitem['locations_id_stock'];
+            $model    = $resaitem['models_id'];
+            $table    = $dbu->getTableForItemType($itemtype);
+            $name     = strtolower($itemtype);
+            $tab      = "glpi_".$name."models";
+            if ($itemtype == "PluginSimcardSimcard") {
+               $tab = 'glpi_plugin_simcard_simcardtypes';
+            }
+            $reserv   = $resaitem['nbrereserv'];
+
+            if ($config->fields['criterion'] == 'serial') {
+               $label = __('Serial number');
+            } else {
+               $label = __('Inventory number');
+            }
+            echo "<tr>";
+            echo "<th>". __('Model')."</th>";
             echo "<th>". __('Selection limited', 'geststock')."</th>";
             echo "<th>".sprintf(__('Selection by %s'), $label, 'geststock')."</th>";
             echo "<th>". __('Selection by file', 'geststock')."</th>";
-         } else {
-            echo "<th>". $label."</th>";
-         }
-         echo "</tr><tr class='tab_bg_1'>";
-         echo "<td>". sprintf(__('%1$s %2$s'), $item->getTypeName(),
-                              Dropdown::getDropdownName($tab, $model)).
-              "</td><td width='25%'>";
+            echo "</tr><tr class='tab_bg_1'>";
+            echo "<td>". sprintf(__('%1$s %2$s'), $item->getTypeName(),
+                                  Dropdown::getDropdownName($tab, $model)).
+                 "</td><td width='25%'>";
 
-         $name  = strtolower($itemtype);
-         if (isset($dispo)) {
-            unset($dispo);
-         }
-         $dispo = [];
-         $modelkey = $name.'models_id';
-         if ($itemtype == "PluginSimcardSimcard") {
-            $modelkey = 'plugin_simcard_simcardtypes_id';
-         }
-         foreach ($DB->request($table, [$modelkey       => $model,
-                                        'locations_id'  => $stock,
-                                        'is_deleted'    => 0]) as $data) {
-            $item = new $itemtype();
-            if ($item->getFromDB($data['id'])
-                && ($item->getField('states_id') == $config->fields['stock_status'])) {
-               $dispo[$data['id']]     = $data['id'];
+            $name  = strtolower($itemtype);
+            if (isset($dispo)) {
+               unset($dispo);
             }
-         }
-         $otherserial = [];
-         foreach ($DB->request('glpi_plugin_geststock_reservations_items_numbers',
-                               ['plugin_geststock_reservations_items_id' => $resaitem['id'],
-                                'itemtype'                               => $itemtype,
-                                'models_id'                              => $model,
-                                'locations_id_stock'                     => $stock]) as $nbre) {
+            $dispo = [];
+            $modelkey = $name.'models_id';
+            if ($itemtype == "PluginSimcardSimcard") {
+               $modelkey = 'plugin_simcard_simcardtypes_id';
+            }
+            foreach ($DB->request($table, [$modelkey       => $model,
+                                           'locations_id'  => $stock,
+                                           'is_deleted'    => 0]) as $data) {
+               $item = new $itemtype();
+               if ($item->getFromDB($data['id'])
+                     && ($item->getField('states_id') == $config->fields['stock_status'])) {
+                  $dispo[$data['id']]     = $data['id'];
+               }
+            }
+            $otherserial = [];
+            foreach ($DB->request('glpi_plugin_geststock_reservations_items_numbers',
+                                  ['plugin_geststock_reservations_items_id' => $resaitem['id'],
+                                   'itemtype'                               => $itemtype,
+                                   'models_id'                              => $model,
+                                   'locations_id_stock'                     => $stock]) as $nbre) {
 
-            $otherserial = importArrayFromDB($nbre['otherserial']);
-         }
-         foreach ($otherserial as $field => $val) {
-            $dispo[$val] = $val;
-         }
+               $otherserial = importArrayFromDB($nbre['otherserial']);
+            }
+            foreach ($otherserial as $field => $val) {
+               $dispo[$val] = $val;
+            }
 
-         if ($reserv < $dispo) {
-            $dispol = array_slice($dispo, 0, $reserv, true);
-         } else {
-            $dispol = $dispo;
-         }
-         if ($canupdate) {
+            if ($reserv < $dispo) {
+               $dispol = array_slice($dispo, 0, $reserv, true);
+            } else {
+               $dispol = $dispo;
+            }
             self::dropdownItem($resaitem['id'], $itemtype, $model, $stock,
                                ['width'     => '70%',
                                 'dispo'     => $dispol,
@@ -553,31 +527,19 @@ class PluginGeststockReservation_Item extends CommonDBChild {
                                    'values'    => $otherserial,
                                    'used'      => $otherserial]);
             }
-            echo "</td>";
-            echo "<td><input type='file' name='".$resaitem['id']."'></td>";
-         } else {
-            echo "- ";
-            foreach ($otherserial as $val) {
-               $item->getFromDB($val);
-               $criterion = $config->fields['criterion'];
-               echo $item->fields[$criterion]." - ";
-            }
+            echo "</td><td>";
+            echo "<input type='file' name='".$resaitem['id']."'></td></tr>";
+            echo "</td></tr>";
          }
-         echo "</tr></td></tr>";
-      }
-      if ($canupdate) {
          echo "<tr class='tab_bg_1'><td></td><td colspan='2' class='center'>";
          echo "<input type='submit' name='addotherserial' value='".__('Update')."' class='submit'>";
          echo "</td><td><input type='submit' name='upload' value='".__('Upload files', 'geststock')."'
                          class='submit'>";
-
          echo "<input type='hidden' name='reservations_id' value='$instID'>";
-         echo "</td></tr>";
+         echo "</td></tr></table>";
+         Html::closeForm();
+         echo "</div>";
       }
-      echo "</table>";
-      Html::closeForm();
-      echo "</div>";
-
    }
 
 
@@ -586,21 +548,17 @@ class PluginGeststockReservation_Item extends CommonDBChild {
       $p['name']           = 'itemtype['.$resaitemid.']['.$itemtype.']['.$model.']['.$stock.']';
       $p['values']         = [];
       $p['multiple']       = true;
-      $p['width']          = '80%';
 
       if (count($options)) {
          foreach ($options as $key => $val) {
             $p[$key] = $val;
          }
       }
-      $params    = [];
-      $item      = new $itemtype();
-      $config    = new PluginGeststockConfig();
-      $config->getFromDB(1);
-      $criterion = $config->fields['criterion'];
+      $params = [];
+      $item   = new $itemtype();
       foreach ($options['dispo'] as $field => $val) {
          $item->getFromDB($field);
-         $params[$val] = $item->fields[$criterion];
+         $params[$val] = $item->fields['otherserial'];
       }
 
       ksort($params);
@@ -653,17 +611,10 @@ class PluginGeststockReservation_Item extends CommonDBChild {
 
       $tab = [];
 
-      $config = new PluginGeststockConfig();
-      $config->getFromDB(1);
-      if ($config->fields['criterion'] == 'serial') {
-         $label = __('Serial number');
-      } else {
-         $label = __('Inventory number');
-      }
       $tab[] = ['id'             => '11',
                 'table'          => 'glpi_plugin_geststock_reservations_items_numbers',
                 'field'          => 'otherserial',
-                'name'           => $label,
+                'name'           => __('Otherserial'),
                 'massiveaction'  => false,
                 'datatype'       => 'specific'];
 
@@ -809,6 +760,8 @@ class PluginGeststockReservation_Item extends CommonDBChild {
 
       $instID = $resa->fields['id'];
 
+      $dbu = new DbUtils();
+
       if (!$resa->can($instID, READ)) {
          return false;
       }
@@ -819,12 +772,12 @@ class PluginGeststockReservation_Item extends CommonDBChild {
       $pdf->setColumnsSize(100);
       $pdf->displayTitle('<b>'._n('Associated item', 'Associated items',2).'</b>');
 
-      $query = "SELECT DISTINCT `itemtype`
-                FROM `glpi_plugin_geststock_reservations_items`
-                WHERE `plugin_geststock_reservations_id` = '".$instID."'
-                ORDER BY `itemtype`";
-      $result = $DB->query($query);
-      $number = $DB->numrows($result);
+      $query = ['SELECT DISTINCT' => 'itemtype',
+               'FROM'            => 'glpi_plugin_geststock_reservations_items',
+               'WHERE'           => ['plugin_geststock_reservations_id' => $instID],
+               'ORDER'           => 'itemtype'];
+      $result = $DB->request($query);
+      $number = count($result);
 
       $pdf->setColumnsSize(15,20,10,20,20,15);
       $config = new PluginGeststockConfig();
@@ -843,8 +796,9 @@ class PluginGeststockReservation_Item extends CommonDBChild {
          $pdf->displayLine(__('No item found'));
       } else {
          for ($i=0 ; $i < $number ; $i++) {
-            $type = $DB->result($result, $i, "itemtype");
-            if (!($item = getItemForItemtype($type))) {
+            $row = $result->next();
+            $type = $row['itemtype'];
+            if (!($item = $dbu->getItemForItemtype($type))) {
                continue;
             }
 
@@ -862,9 +816,10 @@ class PluginGeststockReservation_Item extends CommonDBChild {
                                     = '".$instID."'
                          ORDER BY `glpi_".$tabl."models`.`id`";
 
-            if ($result_linked = $DB->query($query)) {
-               if ($DB->numrows($result_linked)) {
-                  while ($data = $DB->fetch_assoc($result_linked)) {
+            $dbu = new DbUtils();
+            if ($result_linked = $DB->request($query)) {
+               if (count($result_linked)) {
+                  while ($data = $result_linked->next()) {
                      $item->getFromDB($data["id"]);
                      $name = $data["name"];
                      if ($_SESSION["glpiis_ids_visible"] || empty($data["name"])) {
@@ -883,7 +838,7 @@ class PluginGeststockReservation_Item extends CommonDBChild {
                      foreach ($DB->request("glpi_plugin_geststock_reservations_items_numbers",
                                            ['plugin_geststock_reservations_items_id'
                                                     => $data['IDD']]) as $numberitem) {
-                        $table           = getTableForItemType($numberitem['itemtype']);
+                        $table           = $dbu->getTableForItemType($numberitem['itemtype']);
                         $nbreotherserial = importArrayFromDB($numberitem['otherserial']);
 
                         foreach ($nbreotherserial as $id => $itemid) {

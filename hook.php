@@ -116,21 +116,24 @@ function plugin_geststock_giveItem($type, $ID, $data, $num) {
    $table     = $searchopt[$ID]["table"];
    $field     = $searchopt[$ID]["field"];
 
+   $dbu = new DbUtils();
+
    switch ($table.'.'.$field) {
       case "glpi_plugin_geststock_reservations_items.models_id" :
          $resa_id       = $data['id'];
-         $query_device  = "SELECT DISTINCT `itemtype`
-                           FROM `glpi_plugin_geststock_reservations_items`
-                           WHERE `plugin_geststock_reservations_id` = '".$resa_id."'
-                           ORDER BY `itemtype`";
-         $result_device  = $DB->query($query_device);
-         $number_device  = $DB->numrows($result_device);
-         $out            = '';
+         $query_device = ['SELECT DISTINCT' => 'itemtype',
+                          'FROM'            => 'glpi_plugin_geststock_reservations_items',
+                          'WHERE'           => ['plugin_geststock_reservations_id' => $resa_id],
+                          'ORDER'           => 'itemtype'];
+         $result_device = $DB->request($query_device);
+         $number_device = count($result_device);
+         $out           = '';
          if ($number_device > 0) {
             for ($y=0 ; $y < $number_device ; $y++) {
                $column = "name";
-               $type = $DB->result($result_device, $y, "itemtype");
-               if (!($item = getItemForItemtype($type))) {
+               $row    = $result_device->next();
+               $type   = $row['itemtype'];
+               if (!($item = $dbu->getItemForItemtype($type))) {
                   continue;
                }
                $table = "glpi_".strtolower($item->getType())."models";
@@ -181,13 +184,6 @@ function plugin_geststock_giveItem($type, $ID, $data, $num) {
          }
          return $out;
 
-      case "glpi_plugin_geststock_followups.locations_id_new" :
-         $out  = '';
-         foreach($DB->request($table, ['plugin_geststock_reservations_id' => $data['id']]) as $fups) {
-            $out .= dropdown::getDropdownName('glpi_locations', $fups['locations_id_old']);
-         }
-         return $out;
-
    }
    return "";
 }
@@ -233,18 +229,4 @@ function plugin_geststock_getAddSearchOptions($itemtype) {
                  'datatype'   => 'decimal'];
     }
     return $tab;
-}
-
-
-function plugin_geststock_postinit() {
-   global $PLUGIN_HOOKS;
-
-   $type = new PluginGeststockReservation();
-   foreach ($type::$types as $key) {
-      $mod = $key."Model";
-      if (class_exists('PluginSimcardSimcard')) {
-         $mod = 'PluginSimcardSimcardType';
-      }
-      Plugin::registerClass('PluginGeststockSpecification', array('addtabon' => $mod));
-   }
 }

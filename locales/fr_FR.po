@@ -45,10 +45,6 @@ msgstr "Volume"
 msgid "Stock gestion"
 msgstr "Gestion du stock"
 
-#: front/reservation.form.php:76
-msgid "New reservation created on "
-msgstr "Nouvelle réservation créée le"
-
 #: front/reservation_item.form.php:99
 msgid "The item with this number is not free"
 msgstr "L'élément avec ce numéro n'est pas au status disponible"
@@ -256,10 +252,6 @@ msgstr "Navette Nantes"
 msgctxt "status"
 msgid "Road"
 msgstr "Route"
-
-#: inc/reservation.class.php:1135
-msgid "Items removed from stock on "
-msgstr "Eléments sortis du stock le"
 
 #: inc/reservation_item.class.php:236
 msgid "Transfert items"

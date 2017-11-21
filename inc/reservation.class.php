@@ -158,10 +158,8 @@ class PluginGeststockReservation extends CommonDBTM {
          return false;
       }
 
-      $date  = getdate();
       if ((PluginGeststockConfig::TOVA == 1)
-          && (isset($input['date_tova']) && ($this->fields['date_tova'] != $input['date_tova']))
-            && isset($this->fields['date_whished']) && ($this->fields['date_whished'] > $date)) {
+          && (isset($input['date_tova']) && ($this->fields['date_tova'] != $input['date_tova']))) {
          $input['date_whished'] = $input['date_tova'];
       }
 
@@ -378,6 +376,7 @@ class PluginGeststockReservation extends CommonDBTM {
                                                  'step'  => 1]);
          echo "</td></tr>";
       }
+
       echo "<tr class='tab_bg_1'>";
       echo "<td rowspan='5'>".__('Comments')."</td>";
       echo "<td rowspan='5' class='middle' colspan='3'>";
@@ -461,8 +460,7 @@ class PluginGeststockReservation extends CommonDBTM {
                 'field'          => 'id',
                 'name'           => __('ID'),
                 'massiveaction'  => false,
-                'datatype'       => 'itemlink',
-                'nosearch'       => true];
+                'datatype'       => 'number'];
 
       $tab[] = ['id'             => '2',
                 'table'          => 'glpi_plugin_geststock_reservations_items',
@@ -559,14 +557,6 @@ class PluginGeststockReservation extends CommonDBTM {
                    'datatype'       => 'number'];
       }
 
-      $tab[] = ['id'             => '17',
-               'table'          => 'glpi_plugin_geststock_followups',
-               'field'          => 'locations_id_new',
-               'name'           => __('Actual location', 'geststock'),
-               'massiveaction'  => false,
-               'forcegroupby'   =>  true,
-               'joinparams'     => ['jointype' => 'child'],
-               'nosearch'       => true];
       return $tab;
    }
 
@@ -903,13 +893,14 @@ class PluginGeststockReservation extends CommonDBTM {
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
 
+      $dbu = new DbUtils();
       if (static::canView()) {
          $nb = 0;
          switch ($item->getType()) {
             case 'Ticket' :
                if ($_SESSION['glpishow_count_on_tabs']) {
-                  $nb = countElementsInTable('glpi_plugin_geststock_reservations',
-                                             "`tickets_id` = '".$item->getID()."'");
+                  $nb = $dbu->countElementsInTable('glpi_plugin_geststock_reservations',
+                                                   ['tickets_id' => $item->getID()]);
                }
                return self::createTabEntry(self::getTypeName(Session::getPluralNumber()), $nb);
          }
@@ -937,14 +928,15 @@ class PluginGeststockReservation extends CommonDBTM {
          return false;
       }
 
+      $dbu  = new DbUtils();
       $rand = mt_rand();
 
-      $nb    = countElementsInTable('glpi_plugin_geststock_reservations',
-                                    "`tickets_id` = '".$ticket->getID()."'
-                                      AND `is_deleted` = 0");
-      $nbdel = countElementsInTable('glpi_plugin_geststock_reservations',
-                                    "`tickets_id` = '".$ticket->getID()."'
-                                      AND `is_deleted` = 1");
+      $nb    = $dbu->countElementsInTable('glpi_plugin_geststock_reservations',
+                                          ['tickets_id' => $ticket->getID(),
+                                           'is_deleted' => 0]);
+      $nbdel = $dbu->countElementsInTable('glpi_plugin_geststock_reservations',
+                                          ['tickets_id' => $ticket->getID(),
+                                           'is_deleted' => 1]);
       if (Session::haveRight(self::$rightname, READ)) {
          if (Session::haveRight(self::$rightname, CREATE)
              && ($ticket->fields['type'] != Ticket::DEMAND_TYPE)) {

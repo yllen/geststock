@@ -110,12 +110,13 @@ if (isset($_POST["upload"])) {
             fclose($fic);
             // controle item dans fichier et item réservés
             if (count($tabid) == $ri->fields['nbrereserv']) {
+               $criterion = $config->fields['criterion'];
                // ajout dans table des numeros
                $input = ['plugin_geststock_reservations_items_id' => $ri->fields['id'],
                          'itemtype'                               => $ri->fields['itemtype'],
                          'models_id'                              => $ri->fields['models_id'],
                          'locations_id_stock'                     => $ri->fields['locations_id_stock'],
-                         'otherserial'                            => $tabid,
+                         $criterion                               => $tabid,
                          'users_id'                               => Session::getLoginUserID()];
                $newID = $nbre->add($input);
                // change status of item
@@ -136,14 +137,14 @@ if (isset($_POST["upload"])) {
 
 // insert done by dropdown
 } else if (isset($_POST["addotherserial"])) {
-
    foreach ($DB->request("glpi_plugin_geststock_reservations_items",
                          ['plugin_geststock_reservations_id' => $_POST['reservations_id']]) as $resait) {
       $resaitem = $resait['id'];
       // not in post, so deleted
       if (!isset($_POST['itemtype'][$resaitem])) {
          if ($nbre->getFromDBByQuery("WHERE `plugin_geststock_reservations_items_id` = $resaitem")) {
-            $num  = importArrayFromDB($nbre->fields['otherserial']);
+            $criterion = $config->fields['criterion'];
+            $num  = importArrayFromDB($nbre->fields[$criterion]);
             $type = $nbre->fields['itemtype'];
             $item = new $type();
             // item back to Disponible
@@ -159,6 +160,7 @@ if (isset($_POST["upload"])) {
          }
       } else {
          $itemtype = $_POST['itemtype'][$resaitem];
+         $criterion = $config->fields['criterion'];
          foreach ($itemtype as $type => $model) {
             foreach ($model as $mod => $location) {
                foreach ($location as $val => $data) {
@@ -170,14 +172,14 @@ if (isset($_POST["upload"])) {
                                   'itemtype'                               => $type,
                                   'models_id'                              => $mod,
                                   'locations_id_stock'                     => $val,
-                                  'otherserial'                            => $data,
+                                  $criterion                               => $data,
                                   'users_id'                               => Session::getLoginUserID()];
                         $newID = $nbre->add($input);
                      } else  {
                         $nbre->getFromDB($nbre->getID());
-                        $num = importArrayFromDB($nbre->fields['otherserial']);
+                        $num = importArrayFromDB($nbre->fields[$criterion]);
                         $nbre->update(['id'            => $nbre->getID(),
-                                       'otherserial'      => $data,
+                                       $criterion      => $data,
                                        'users_id'      => Session::getLoginUserID()]);
 
                         $item = new $type();

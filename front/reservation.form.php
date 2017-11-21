@@ -73,7 +73,7 @@ if (isset($_POST["add"])) {
 
                $Fup->add(['tickets_id'  => $_POST['tickets_id'],
                           'content'     => sprintf(__('%1$s %2$s'),
-                                                   __('New reservation created on ', 'geststock'),
+                                                   __('New reservation created on', 'geststock'),
                                                    sprintf(__('%1$s (%2$s)'),
                                                            $_SESSION["glpi_currenttime"],
                                                            $newID)),

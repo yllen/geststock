@@ -32,7 +32,7 @@
 class PluginGeststockConfig extends CommonDBTM {
 
    static $rightname  = 'plugin_geststock';
-   const TOVA         = 1;
+   const TOVA         = 0;
 
 
 
@@ -53,7 +53,7 @@ class PluginGeststockConfig extends CommonDBTM {
                      `transit_status` int(11) NULL,
                      `date_mod` datetime default NULL,
                      `users_id` int(11) NULL,
-                     `criterion` varchar(100) NOT NULL,
+                     `criterion` text NOT NULL,
                      PRIMARY KEY  (`id`),
                      KEY `users_id` (`users_id`),
                      KEY `entities_id_stock` (`entities_id_stock`),
@@ -65,16 +65,12 @@ class PluginGeststockConfig extends CommonDBTM {
       } else { // migration for maedi
          $migration = new Migration(100);
          if (!FieldExists($table, "stock_status")) {
-            $migration->addField($table, 'criterion', 'string', ['value' => 'otherserial',
-                                                                 'after' => 'entities_id_stock']);
-            $migration->addField($table, 'transit_status', 'integer', ['value' => 3,
-                                                                       'after' => 'entities_id_stock']);
-            $migration->addField($table, 'stock_status', 'integer', ['value' => 1,
-                                                                     'after' => 'entities_id_stock']);
+            $migration->addField($table, 'stock_status', 'integer', ['value' => 1]);
+            $migration->addField($table, 'transit_status', 'integer', ['value' => 3]);
+            $migration->addField($table, 'criterion', 'text', ['value' => 'otherserial']);
          }
          $migration->executeMigration();
       }
-      return true;
    }
 
 
