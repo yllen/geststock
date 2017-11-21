@@ -461,8 +461,7 @@ class PluginGeststockReservation extends CommonDBTM {
                 'field'          => 'id',
                 'name'           => __('ID'),
                 'massiveaction'  => false,
-                'datatype'       => 'itemlink',
-                'nosearch'       => true];
+                'datatype'       => 'number'];
 
       $tab[] = ['id'             => '2',
                 'table'          => 'glpi_plugin_geststock_reservations_items',
