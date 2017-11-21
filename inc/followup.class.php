@@ -122,4 +122,18 @@ class PluginGeststockFollowup extends CommonDBTM {
             break;
       }
    }
+
+
+   function getSearchOptionstoAdd() {
+
+      $tab = [];
+
+      $tab[] = ['id'             => '1',
+               'table'          => 'glpi_plugin_geststock_followups',
+               'field'          => 'locations_id_new',
+               'name'           => __('New location', 'geststock'),
+               'searchtype'     => 'equals',
+               'datatype'       => 'specific'];
+      return $tab;
+   }
 }

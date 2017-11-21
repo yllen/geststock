@@ -159,7 +159,8 @@ class PluginGeststockReservation extends CommonDBTM {
       }
 
       if ((PluginGeststockConfig::TOVA == 1)
-          && (isset($input['date_tova']) && ($this->fields['date_tova'] != $input['date_tova']))) {
+          && (isset($input['date_tova']) && ($this->fields['date_tova'] != $input['date_tova']))
+          && isset($this->fields['date_whished']) && ($this->fields['date_whished'] > $date)) {
          $input['date_whished'] = $input['date_tova'];
       }
 
@@ -556,6 +557,15 @@ class PluginGeststockReservation extends CommonDBTM {
                    'name'           => __('Number of packages', 'geststock'),
                    'datatype'       => 'number'];
       }
+
+         $tab[] = ['id'             => '17',
+                  'table'          => 'glpi_plugin_geststock_followups',
+                  'field'          => 'locations_id_new',
+                  'name'           => __('Actual location', 'geststock'),
+                  'massiveaction'  => false,
+                  'forcegroupby'   =>  true,
+                  'joinparams'     => ['jointype' => 'child'],
+                  'nosearch'       => true];
 
       return $tab;
    }

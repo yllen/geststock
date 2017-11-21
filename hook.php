@@ -184,10 +184,31 @@ function plugin_geststock_giveItem($type, $ID, $data, $num) {
          }
          return $out;
 
+      case "glpi_plugin_geststock_followups.locations_id_new" :
+         $out  = '';
+         foreach($DB->request($table, ['plugin_geststock_reservations_id' => $data['id']]) as $fups) {
+            $out .= dropdown::getDropdownName('glpi_locations', $fups['locations_id_old']);
+         }
+         return $out;
+
    }
    return "";
 }
 
+
+
+function plugin_geststock_postinit() {
+   global $PLUGIN_HOOKS;
+
+   $type = new PluginGeststockReservation();
+   foreach ($type::$types as $key) {
+      $mod = $key."Model";
+      if (class_exists('PluginSimcardSimcard')) {
+         $mod = 'PluginSimcardSimcardType';
+      }
+      Plugin::registerClass('PluginGeststockSpecification', array('addtabon' => $mod));
+   }
+}
 
 function plugin_geststock_getAddSearchOptions($itemtype) {
    global $CFG_GLPI;

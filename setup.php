@@ -74,6 +74,8 @@ function plugin_init_geststock() {
    }
 
    $PLUGIN_HOOKS['plugin_pdf']['PluginGeststockReservation'] = 'PluginGeststockReservationPDF';
+
+   $PLUGIN_HOOKS['post_init']['geststock'] = 'plugin_geststock_postinit';
 }
 
 
