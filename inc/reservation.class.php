@@ -158,8 +158,10 @@ class PluginGeststockReservation extends CommonDBTM {
          return false;
       }
 
+      $date  = getdate();
       if ((PluginGeststockConfig::TOVA == 1)
-          && (isset($input['date_tova']) && ($this->fields['date_tova'] != $input['date_tova']))) {
+          && (isset($input['date_tova']) && ($this->fields['date_tova'] != $input['date_tova']))
+            && isset($this->fields['date_whished']) && ($this->fields['date_whished'] > $date)) {
          $input['date_whished'] = $input['date_tova'];
       }
 
