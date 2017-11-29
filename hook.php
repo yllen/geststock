@@ -185,6 +185,7 @@ function plugin_geststock_giveItem($type, $ID, $data, $num) {
          $out  = '';
          foreach($DB->request($table, ['plugin_geststock_reservations_id' => $data['id']]) as $fups) {
             $out .= dropdown::getDropdownName('glpi_locations', $fups['locations_id_old']);
+            $out .= "<br />";
          }
          return $out;
 
