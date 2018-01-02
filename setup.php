@@ -54,9 +54,6 @@ function plugin_init_geststock() {
    $type = new PluginGeststockReservation();
    foreach ($type::$types as $key) {
       $mod = $key."Model";
-      if ($plugin->isActivated("simcard")) {
-         $mod = 'PluginSimcardSimcardType';
-      }
       Plugin::registerClass('PluginGeststockSpecification', ['addtabon' => $mod]);
    }
 
