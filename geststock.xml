@@ -6,12 +6,12 @@
     <logo></logo>
     <description>
         <short>
-            <fr><![CDATA[Gestion de stock centralisé pour le matériel]]></fr>
-            <en><![CDATA[Global management for asset stock]]></en>
+            <fr>Gestion de stock centralisé pour le matériel</fr>
+            <en>Global management for stock of assets</en>
         </short>
         <long>
-            <fr><![CDATA[Ce plugin permet de gérer d'une manière globale le stock des éléments de l'inventaire et ce pour toutes les entités. Une entité réserve un matériel et l'acheminement est suivi du départ du stock jusqu'à l'entité demandresse.]]></fr>
-            <en><![CDATA[This plugin allows you to manage in a global way tje stock of asset items and this for all entities. An entity reserves an asset and the routing is followed since the output of the stock to the requested entity]]></en>
+            <fr>Ce plugin permet de gérer d'une manière globale le stock des éléments de l'inventaire et ce pour toutes les entités. Une entité réserve un matériel et l'acheminement est suivi du départ du stock jusqu'à l'entité demandresse.</fr>
+            <en>This plugin allows you to manage in a global way the stock of asset items and this for all entities. An entity reserves an asset and the routing is followed since the output of the stock to the requested entity.</en>
         </long>
     </description>
     <homepage>https://github.com/yllen/geststock</homepage>
@@ -31,7 +31,7 @@
         <lang>fr_FR</lang>
         <lang>en_GB</lang>
     </langs>
-    <license><![CDATA[AGPLv3]]></license>
+    <license>AGPLv3</license>
     <tags>
         <fr>
             <tag>Gestion</tag>
@@ -42,7 +42,4 @@
             <tag>inventory</tag>
         </en>
     </tags>
-    <screenshots>
-            <screenshot></screenshot>
-    </screenshots>
 </root>
