@@ -456,7 +456,7 @@ class PluginGeststockReservation extends CommonDBTM {
 
       $tab['common']            = _n('Stock reservation', 'Stock reservation', 2, 'geststock');
 
-      $tab[] = ['id'             => '1',
+      $tab[1] = ['id'             => '1',
                 'table'          => $this->getTable(),
                 'field'          => 'id',
                 'name'           => __('ID'),
@@ -464,7 +464,7 @@ class PluginGeststockReservation extends CommonDBTM {
                 'searchtype'     => 'contains',
                 'datatype'       => 'itemlink'];
 
-      $tab[] = ['id'             => '2',
+      $tab[2] = ['id'             => '2',
                 'table'          => 'glpi_plugin_geststock_reservations_items',
                 'field'          => 'models_id',
                 'name'           => sprintf(__('%1$s - %2$s'), _x('Quantity', 'Number'),
@@ -474,92 +474,92 @@ class PluginGeststockReservation extends CommonDBTM {
                 'joinparams'     => ['jointype' => 'child'],
                 'nosearch'       => true];
 
-      $tab[] = ['id'             => '3',
+      $tab[3] = ['id'             => '3',
                 'table'          => $this->getTable(),
                 'field'          =>  'locations_id',
                 'name'           =>  __('Delivery location', 'geststock'),
                 'searchtype'     => 'equals',
                 'datatype'       => 'specific'];
 
-      $tab[] = ['id'             => '4',
+      $tab[4] = ['id'             => '4',
                 'table'          => $this->getTable(),
                 'field'          =>  'comment',
                 'name'           =>  __('Comments'),
                 'datatype'       =>  'text'];
 
-      $tab[] = ['id'             => '5',
+      $tab[5] = ['id'             => '5',
                 'table'          => 'glpi_tickets',
                 'field'          => 'id',
                 'name'           => __('Ticket'),
                 'datatype'       => 'itemlink'];
 
-      $tab[] = ['id'             => '6',
+      $tab[6] = ['id'             => '6',
                 'table'          => $this->getTable(),
                 'field'          => 'entities_id_deliv',
                 'name'           => __('Delivery entity', 'geststock'),
                 'searchtype'     => 'equals',
                 'datatype'       => 'specific'];
 
-      $tab[] = ['id'             => '7',
+      $tab[7] = ['id'             => '7',
                 'table'          => 'glpi_users',
                 'field'          => 'name',
                 'name'           => __('User'),
                 'datatype'       => 'dropdown'];
 
-      $tab[] = ['id'             => '9',
+      $tab[9] = ['id'             => '9',
                 'table'          => $this->getTable(),
                 'field'          => 'date_mod',
                 'name'           => __('Last update'),
                 'massiveaction'  => false,
                 'datatype'       => 'datetime'];
 
-      $tab[] = ['id'             => '10',
+      $tab[10] = ['id'             => '10',
                 'table'          => $this->getTable(),
                 'field'          => 'receipt_date',
                 'name'           => __('Receipt date', 'geststock'),
                 'datatype'       => 'date'];
 
-      $tab[] = ['id'             => '11',
+      $tab[11] = ['id'             => '11',
                 'table'          => $this->getTable(),
                 'field'          => 'status',
                 'name'           => __('Status'),
                 'searchtype'     => 'equals',
                 'datatype'       => 'specific'];
 
-      $tab[] = ['id'             => '12',
+      $tab[12] = ['id'             => '12',
                 'table'          => $this->getTable(),
                 'field'          => 'date_whished',
                 'name'           => __('Delivery date', 'geststock'),
                 'datatype'       => 'date'];
 
       if (PluginGeststockConfig::TOVA == 1) {
-         $tab[] = ['id'             => '13',
+         $tab[13] = ['id'             => '13',
                    'table'          => $this->getTable(),
                    'field'          => 'date_tova',
                    'name'           => __('Tova date', 'geststock'),
                    'datatype'       => 'date'];
 
-         $tab[] = ['id'             => '14',
+         $tab[14] = ['id'             => '14',
                    'table'          => $this->getTable(),
                    'field'          => 'number_tova',
                    'name'           => __('Suitcase number', 'geststock'),
                    'datatype'       => 'text'];
 
-         $tab[] = ['id'             => '15',
+         $tab[15] = ['id'             => '15',
                    'table'          => $this->getTable(),
                    'field'          => 'type_tova',
                    'name'           => __('Suitcase type', 'geststock'),
                    'searchtype'     => 'equals',
                    'datatype'       => 'specific'];
 
-         $tab[] = ['id'             => '16',
+         $tab[16] = ['id'             => '16',
                    'table'          => $this->getTable(),
                    'field'          => 'number_package',
                    'name'           => __('Number of packages', 'geststock'),
                    'datatype'       => 'number'];
       }
 
-      $tab[] = ['id'             => '17',
+      $tab[17] = ['id'             => '17',
                'table'          => 'glpi_plugin_geststock_followups',
                'field'          => 'locations_id_new',
                'name'           => __('Actual location', 'geststock'),
