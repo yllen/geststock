@@ -657,7 +657,7 @@ class PluginGeststockReservation_Item extends CommonDBChild {
    }
 
 
-   function getSearchOptions() {
+   function getSearchOptionsNew() {
 
       $tab = [];
 
