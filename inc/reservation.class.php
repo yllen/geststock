@@ -450,7 +450,7 @@ class PluginGeststockReservation extends CommonDBTM {
 
 
 
-   function getSearchOptions() {
+   function getSearchOptionsNew() {
 
       $tab = [];
 
@@ -1140,14 +1140,15 @@ class PluginGeststockReservation extends CommonDBTM {
                                   'receipt_date'  => $_SESSION["glpi_currenttime"],
                                   'status'        => $config->fields['transit_status']]);
          }
-      }
-      $fup = new TicketFollowup();
-      $fup->add(['tickets_id'  => $ticket,
-                 'content'     => sprintf(__('%1$s %2$s'),
-                                          __('Items removed from stock on ', 'geststock'),
-                                          $_SESSION["glpi_currenttime"]),
-                 'date'        =>  $_SESSION["glpi_currenttime"],
-                 'users_id'    => Session::getLoginUserID()]);
+
+         $fup = new TicketFollowup();
+         $fup->add(['tickets_id'  => $ticket,
+                    'content'     => sprintf(__('%1$s %2$s'),
+                                             __('Items removed from stock on ', 'geststock'),
+                                             $_SESSION["glpi_currenttime"]),
+                    'date'        =>  $_SESSION["glpi_currenttime"],
+                    'users_id'    => Session::getLoginUserID()]);
+       }
    }
 
 }
