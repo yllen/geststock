@@ -1,6 +1,5 @@
 <?php
 /*
- * @version $Id: $
  -------------------------------------------------------------------------
  LICENSE
 
@@ -21,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017 GestStock plugin team
+ @copyright Copyright (c) 2017-2018 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -158,10 +157,9 @@ class PluginGeststockProfile extends Profile {
          }
       }
 
-      foreach ($DB->request("SELECT *
-                             FROM `glpi_profilerights`
-                             WHERE `profiles_id`='".$_SESSION['glpiactiveprofile']['id']."'
-                                   AND `name` LIKE '%plugin_ageststock%'") as $prof) {
+      foreach ($DB->request(['FROM'  => 'glpi_profilerights',
+                             'WHERE' => ['profiles_id' => $_SESSION['glpiactiveprofile']['id'],
+                                         'name' => ['LIKE', '%plugin_ageststock%']]]) as $prof) {
          $_SESSION['glpiactiveprofile'][$prof['name']] = $prof['rights'];
       }
    }

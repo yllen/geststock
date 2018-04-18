@@ -1,6 +1,5 @@
 <?php
 /*
- * @version $Id: $
  -------------------------------------------------------------------------
  LICENSE
 
@@ -21,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017 GestStock plugin team
+ @copyright Copyright (c) 2017-2018 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -405,7 +404,7 @@ class PluginGeststockReservation extends CommonDBTM {
       global $DB;
 
       $table = 'glpi_plugin_geststock_reservations';
-      if (!TableExists($table)) { //not installed
+      if (!$DB->TableExists($table)) { //not installed
          $query = "CREATE TABLE `". $table."`(
                      `id` int(11) NOT NULL AUTO_INCREMENT,
                      `users_id` int(11) NULL,
@@ -449,12 +448,12 @@ class PluginGeststockReservation extends CommonDBTM {
    }
 
 
-
    function getSearchOptionsNew() {
 
       $tab = [];
 
-      $tab['common']            = _n('Stock reservation', 'Stock reservation', 2, 'geststock');
+      $tab[] = ['id'            => 'common',
+                'name'          => _n('Stock reservation', 'Stock reservation', 2, 'geststock')];
 
       $tab[] = ['id'             => '1',
                 'table'          => $this->getTable(),
@@ -685,7 +684,8 @@ class PluginGeststockReservation extends CommonDBTM {
       global $DB;
 
       $ticketlist = [];
-      foreach ($DB->request("SELECT `tickets_id` FROM `glpi_plugin_geststock_reservations`") as $data) {
+      foreach ($DB->request(['SELECT'  => 'tickets_id',
+                             'FROM'    => 'glpi_plugin_geststock_reservations']) as $data) {
          $ticketlist[] = $data['tickets_id'];
       }
       $condition = "`glpi_tickets`.`status`

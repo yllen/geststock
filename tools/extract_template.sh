@@ -1,7 +1,7 @@
 #!/bin/bash
 
 soft='GLPI - Geststock plugin'
-version='0.90'
+version='1.1.0'
 email=glpi-translation@gna.org
 copyright='Nelly Mahu-Lasson'
 

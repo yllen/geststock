@@ -1,6 +1,5 @@
 <?php
 /*
- * @version $Id: $
  -------------------------------------------------------------------------
  LICENSE
 
@@ -21,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017 GestStock plugin team
+ @copyright Copyright (c) 2017-2018 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -36,7 +35,7 @@ class PluginGeststockFollowup extends CommonDBTM {
       global $DB;
 
       $table = 'glpi_plugin_geststock_followups';
-      if (!TableExists($table)) { //not installed
+      if (!$DB->tableExists($table)) { //not installed
          $query = "CREATE TABLE `". $table."`(
                      `id` int(11) NOT NULL AUTO_INCREMENT,
                      `plugin_geststock_reservations_id` int(11) NULL,
@@ -124,7 +123,7 @@ class PluginGeststockFollowup extends CommonDBTM {
    }
 
 
-   function getSearchOptionstoAdd() {
+   static function getSearchOptionstoAdd($itemtype=null) {
 
       $tab = [];
 
@@ -134,6 +133,7 @@ class PluginGeststockFollowup extends CommonDBTM {
                'name'           => __('New location', 'geststock'),
                'searchtype'     => 'equals',
                'datatype'       => 'specific'];
+
       return $tab;
    }
 }

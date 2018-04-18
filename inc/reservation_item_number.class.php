@@ -1,6 +1,5 @@
 <?php
 /*
- * @version $Id: $
 -------------------------------------------------------------------------
 LICENSE
 
@@ -21,7 +20,7 @@ along with GestStock. If not, see <http://www.gnu.org/licenses/>.
 
 @package   geststock
 @author    Nelly Mahu-Lasson
-@copyright Copyright (c) 2017 GestStock plugin team
+@copyright Copyright (c) 2017-2018 GestStock plugin team
 @license   AGPL License 3.0 or (at your option) any later version
 http://www.gnu.org/licenses/agpl-3.0-standalone.html
 @link
@@ -73,7 +72,7 @@ class PluginGeststockReservation_Item_Number extends CommonDBChild {
       global $DB;
 
       $table = 'glpi_plugin_geststock_reservations_items_numbers';
-      if (!TableExists($table)) { //not installed
+      if (!$DB->tableExists($table)) { //not installed
          $query = "CREATE TABLE `glpi_plugin_geststock_reservations_items_numbers`(
                      `id` int(11) NOT NULL AUTO_INCREMENT,
                      `plugin_geststock_reservations_items_id` int(11) NULL,

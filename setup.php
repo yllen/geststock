@@ -1,6 +1,5 @@
 <?php
 /*
- * @version $Id: $
  -------------------------------------------------------------------------
  LICENSE
 
@@ -21,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017 GestStock plugin team
+ @copyright Copyright (c) 2017-2018 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -35,6 +34,8 @@ if (!defined("PLUGIN_GESTSTOCK_UPLOAD_DIR")) {
 
 function plugin_init_geststock() {
    global $PLUGIN_HOOKS,$CFG_GLPI;
+
+   $PLUGIN_HOOKS["helpdesk_menu_entry"]['geststock'] = true;
 
    $PLUGIN_HOOKS['csrf_compliant']['geststock'] = true;
 
@@ -84,7 +85,10 @@ function plugin_version_geststock() {
            'author'         => 'Nelly Mahu-Lasson',
            'license'        => 'GPLv3+',
            'homepage'       => '',
-           'minGlpiVersion' => '9.2'];
+           'minGlpiVersion' => '9.2',
+           'page'           => "/front/reservation.php"
+   ];
+
 }
 
 

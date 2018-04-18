@@ -207,7 +207,7 @@ function plugin_geststock_postinit() {
       if (class_exists('PluginSimcardSimcard')) {
          $mod = 'PluginSimcardSimcardType';
       }
-      Plugin::registerClass('PluginGeststockSpecification', array('addtabon' => $mod));
+      Plugin::registerClass('PluginGeststockSpecification', ['addtabon' => $mod]);
    }
 }
 

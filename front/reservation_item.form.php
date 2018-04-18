@@ -1,6 +1,5 @@
 <?php
 /*
- * @version $Id: $
  -------------------------------------------------------------------------
  LICENSE
 
@@ -21,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017 GestStock plugin team
+ @copyright Copyright (c) 2017-2018 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -50,19 +49,19 @@ if (isset($_POST["upload"])) {
    if (isset($_FILES)) {
       foreach ($_FILES as $name => $file) {
          if ($file['error'] > 0) {
-            $erreur = "Erreur lors du transfert";
+            $erreur = "Error during the transfer";
          }
          $extensions_valides = ['csv', 'txt'];
          $extension_upload = strtolower(substr(strrchr($file['name'], '.'), 1));
          if (!empty($file['name'])) {
             if (!in_array($extension_upload, $extensions_valides)) {
-               echo "Extension incorrecte (uniquement .csv et .txt)";
+               echo "Incorrect extension (only .csv and .txt)";
             }
             $nom      = strtolower(substr($file['name'], 0,
                                   strpos($file['name'], ".")))."-".$name.".".$extension_upload;
             $resultat = move_uploaded_file($file['tmp_name'], PLUGIN_GESTSTOCK_UPLOAD_DIR.$nom);
             if (!$resultat) {
-               echo "Erreur lors du transfert";
+               echo "Error during the transfer";
             }
             $ligne = 1;
             $fic   = fopen(PLUGIN_GESTSTOCK_UPLOAD_DIR.$nom, "r");

@@ -1,6 +1,5 @@
 <?php
 /*
- * @version $Id: $
  -------------------------------------------------------------------------
  LICENSE
 
@@ -21,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017 GestStock plugin team
+ @copyright Copyright (c) 2017-2018 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
  http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -135,7 +134,7 @@ class PluginGeststockSpecification extends CommonDBTM {
        global $DB;
 
        $table = 'glpi_plugin_geststock_specifications';
-       if (!TableExists($table)) { //not installed
+       if (!$DB->tableExists($table)) { //not installed
           $query = "CREATE TABLE `". $table."`(
                      `id` int(11) NOT NULL AUTO_INCREMENT,
                      `models_id` int(11) NOT NULL DEFAULT '0',
