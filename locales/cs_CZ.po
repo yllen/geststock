@@ -11,321 +11,322 @@ msgstr ""
 "POT-Creation-Date: 2018-04-18 16:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>, 2018\n"
-"Language-Team: French (https://www.transifex.com/yllen/teams/85700/fr/)\n"
+"Language-Team: Czech (Czech Republic) (https://www.transifex.com/yllen/teams/85700/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: cs_CZ\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: hook.php:223 inc/specification.class.php:86
 msgid "Length"
-msgstr "Longueur"
+msgstr "Délka"
 
 #: hook.php:232 inc/specification.class.php:92
 msgid "Width"
-msgstr "Largeur"
+msgstr "Šírka"
 
 #: hook.php:238 inc/specification.class.php:98
 msgid "Height"
-msgstr "Hauteur"
+msgstr "Výška"
 
 #: hook.php:244 inc/reservation_item.class.php:316
 #: inc/specification.class.php:104
 msgid "Weight"
-msgstr "Poids"
+msgstr "Hmotnost"
 
 #: hook.php:250 inc/reservation_item.class.php:315
 #: inc/specification.class.php:110
 msgid "Volume"
-msgstr "Volume"
+msgstr "Objem"
 
 #: setup.php:83 inc/gestion.class.php:46 inc/menu.class.php:38
 #: inc/profile.class.php:132
 msgid "Stock gestion"
-msgstr "Gestion du stock"
+msgstr "Správa skladu"
 
 #: front/reservation.form.php:75
 msgid "New reservation created on"
-msgstr "Nouvelle réservation créée le "
+msgstr ""
 
 #: front/reservation_item.form.php:97
 msgid "The item with this number is not free"
-msgstr "L'élément avec ce numéro n'est pas au status disponible"
+msgstr "Položka s tímto číslem není volná"
 
 #: front/reservation_item.form.php:102
 #, php-format
 msgid "Item not found with this %s number"
-msgstr "Elément non trouvé avec ce numéro %s"
+msgstr "Nebyla nalezena položka s tímto číslem %s"
 
 #: front/reservation_item.form.php:127 front/reservation_item.form.php:199
 msgid "Number selected different from number reserved"
-msgstr "Nombre sélectionné différent du nombre réservé"
+msgstr "Počet vybraných se liší od počtu zarezervovaných"
 
 #: front/reservation_item.form.php:212 inc/reservation.class.php:173
 msgid "Thanks to specify an asset item type"
-msgstr "Merci de sélectionner un type d'élément"
+msgstr "Je třeba určit typ položky majetku"
 
 #: front/reservation_item.form.php:217 inc/reservation.class.php:179
 msgid "Thanks to specify an asset model"
-msgstr "Merci de sélectionner un modèle"
+msgstr "Je třeba určit model majetku"
 
 #: inc/config.class.php:102
 msgid "Entity of stock"
-msgstr "Entité gérant le stock"
+msgstr "Entita skladu"
 
 #: inc/config.class.php:111
 msgid "Status of item in stock"
-msgstr "Statut des éléments en stock"
+msgstr ""
 
 #: inc/config.class.php:120
 msgid "status of item in transit"
-msgstr "Statut des éléments en transit"
+msgstr ""
 
 #: inc/config.class.php:129
 msgid "Criterion of items"
-msgstr "Critère de l'élément"
+msgstr ""
 
 #: inc/followup.class.php:133 inc/reservation_item.class.php:314
 #: inc/reservation_item.class.php:755 inc/reservation_item.class.php:848
 msgid "New location"
-msgstr "Prochain lieu de stockage"
+msgstr "Nové umístění"
 
 #: inc/gestion.class.php:77
 msgid "See stock"
-msgstr "Voir le stock"
+msgstr "Zobrazit sklad"
 
 #: inc/gestion.class.php:93
 msgid "Export models in stock to TOVA"
-msgstr "Exporter les modèles en stock vers TOVA"
+msgstr "Exportovat modely ve skladu do TOVA"
 
 #: inc/gestion.class.php:109
 msgid "Number in stock"
-msgstr "En stock"
+msgstr "Počet ve skladu"
 
 #: inc/gestion.class.php:110
 msgid "Reserved in stock"
-msgstr "Réservé en stock"
+msgstr "Rezervováno ve skladu"
 
 #: inc/gestion.class.php:111
 msgid "Number free"
-msgstr "Disponible"
+msgstr "Počet volných"
 
 #: inc/gestion.class.php:112
 msgid "Reserved in transit"
-msgstr "Réservé en transit"
+msgstr "Rezervováno v přepravě"
 
 #: inc/menu.class.php:40 inc/profile.class.php:130
 #: inc/reservation.class.php:124 inc/reservation.class.php:456
 #: inc/reservation_item.class.php:349
 msgid "Stock reservation"
 msgid_plural "Stock reservations"
-msgstr[0] "Réservation de stock"
-msgstr[1] "Réservations de stock"
+msgstr[0] "Rezervace skladu"
+msgstr[1] "Rezervace skladu"
+msgstr[2] "Rezervací skladu"
 
 #: inc/reservation.class.php:80 inc/reservation.class.php:114
 msgctxt "status"
 msgid "Asked"
-msgstr "Demandé"
+msgstr "Poptáváno"
 
 #: inc/reservation.class.php:83 inc/reservation.class.php:115
 msgctxt "status"
 msgid "Waiting"
-msgstr "En attente"
+msgstr "Čeká"
 
 #: inc/reservation.class.php:86 inc/reservation.class.php:117
 msgctxt "status"
 msgid "Receipted"
-msgstr "Réceptionné"
+msgstr "Potvrzeno"
 
 #: inc/reservation.class.php:89 inc/reservation.class.php:116
 msgctxt "status"
 msgid "Refused"
-msgstr "Refusé"
+msgstr "Odmítnuto"
 
 #: inc/reservation.class.php:143 inc/reservation.class.php:189
 msgid "Ticket is mandatory to make a reservation"
-msgstr "Le ticket est obligatoire pour faire une réservation"
+msgstr "Aby bylo možné zarezervovat, je třeba požadavku"
 
 #: inc/reservation.class.php:149 inc/reservation.class.php:194
 msgid "Entity is mandatory to make a reservation"
-msgstr "L'entité est obligatoire pour faire une réservation"
+msgstr "Aby bylo možné zarezervovat, je třeba entity"
 
 #: inc/reservation.class.php:155 inc/reservation.class.php:199
 msgid "Location is mandatory to make a reservation"
-msgstr "Le lieu est obligatoire pour faire une réservation"
+msgstr "Aby bylo možné zarezervovat, je třeba umístění"
 
 #: inc/reservation.class.php:184
 msgid "Thanks to specify number of items whished"
-msgstr "Merci de spécifié le nombre d'éléments désiré"
+msgstr "Je třeba zadat počet položek které si přejete"
 
 #: inc/reservation.class.php:284
 msgid "Stock location"
-msgstr "Lieu du stock"
+msgstr "Umístění skladu"
 
 #: inc/reservation.class.php:300 inc/reservation.class.php:323
 #: inc/reservation.class.php:498 inc/reservation.class.php:1064
 msgid "Delivery entity"
-msgstr "Entité de réception"
+msgstr "Entita doručení"
 
 #: inc/reservation.class.php:306 inc/reservation.class.php:323
 #: inc/reservation.class.php:479 inc/reservation.class.php:1068
 msgid "Delivery location"
-msgstr "Lieu de livraison"
+msgstr "Umístění doručení"
 
 #: inc/reservation.class.php:331 inc/reservation.class.php:531
 #: inc/reservation.class.php:1079 inc/reservation_item.class.php:233
 msgid "Delivery date"
-msgstr "Date de rapatriement"
+msgstr "Datum doručení"
 
 #: inc/reservation.class.php:354 inc/reservation.class.php:538
 #: inc/reservation.class.php:1086 inc/reservation_item.class.php:247
 msgid "Tova date"
-msgstr "Date de livraison (remise)"
+msgstr "Datum tova"
 
 #: inc/reservation.class.php:359 inc/reservation.class.php:544
 #: inc/reservation.class.php:1088 inc/reservation_item.class.php:250
 msgid "Suitcase number"
-msgstr "N° de valise"
+msgstr "Číslo zavazadla"
 
 #: inc/reservation.class.php:365 inc/reservation.class.php:550
 #: inc/reservation.class.php:1090 inc/reservation_item.class.php:252
 msgid "Suitcase type"
-msgstr "Type de valise"
+msgstr "Typ zavazadla"
 
 #: inc/reservation.class.php:372 inc/reservation.class.php:557
 msgid "Number of packages"
-msgstr "Nombre de colis"
+msgstr "Počet balíčků"
 
 #: inc/reservation.class.php:518 inc/reservation.class.php:1081
 #: inc/reservation_item.class.php:238
 msgid "Receipt date"
-msgstr "Date de réception"
+msgstr "Datum účtu"
 
 #: inc/reservation.class.php:564 inc/reservation_item.class.php:313
 #: inc/reservation_item.class.php:753 inc/reservation_item.class.php:848
 msgid "Actual location"
-msgstr "Lieu de stockage actuel"
+msgstr "Stávající umístění"
 
 #: inc/reservation.class.php:779
 msgid "No free item"
-msgstr "Aucun élément disponible pour ce modèle"
+msgstr "Žádná volná položka"
 
 #: inc/reservation.class.php:954
 msgid "can't create a ticket for ticket type incident"
-msgstr "Impossible de créer une réservation pour un ticket de type Incident"
+msgstr "není možné vytvořit požadavek pro typ incident"
 
 #: inc/reservation.class.php:959
 msgid "Reservation present in dustbin"
-msgstr "Réservation dans la corbeille"
+msgstr "Rezervace nacházející se v koši"
 
 #: inc/reservation.class.php:967
 msgid "Add a reservation"
-msgstr "Ajouter une réservation"
+msgstr "Přidat rezervaci"
 
 #: inc/reservation.class.php:974
 msgid "Create a reservation from this ticket"
-msgstr "Créer une réservation depuis ce ticket"
+msgstr "Vytvořit z tohoto požadavku rezervaci"
 
 #: inc/reservation.class.php:996 inc/reservation.class.php:1016
 msgctxt "status"
 msgid "Accompanied"
-msgstr "Accompagnée"
+msgstr "Doprovázeno"
 
 #: inc/reservation.class.php:997 inc/reservation.class.php:1019
 msgctxt "status"
 msgid "Accompanied RAILWAY"
-msgstr "Accompagnée FER"
+msgstr "Doprovázeno železnice"
 
 #: inc/reservation.class.php:998 inc/reservation.class.php:1022
 msgctxt "status"
 msgid "Flight department"
-msgstr "Avion du département"
+msgstr "Letové oddělení"
 
 #: inc/reservation.class.php:999 inc/reservation.class.php:1025
 msgctxt "status"
 msgid "Mail"
-msgstr "Courrier"
+msgstr "Pošta"
 
 #: inc/reservation.class.php:1000 inc/reservation.class.php:1028
 msgctxt "status"
 msgid "Accompanied mail"
-msgstr "Courrier accompagné"
+msgstr "Doprovázeno pošta"
 
 #: inc/reservation.class.php:1001 inc/reservation.class.php:1031
 msgctxt "status"
 msgid "Secure freight"
-msgstr "Fret sécurisé"
+msgstr "Zabezpečená doprava"
 
 #: inc/reservation.class.php:1002 inc/reservation.class.php:1034
 msgctxt "status"
 msgid "Freight"
-msgstr "Fret"
+msgstr "Doprava"
 
 #: inc/reservation.class.php:1003 inc/reservation.class.php:1037
 msgctxt "status"
 msgid "Freight RAILWAY"
-msgstr "Fret FER"
+msgstr "Doprava železnice"
 
 #: inc/reservation.class.php:1004 inc/reservation.class.php:1040
 msgctxt "status"
 msgid "Freight PTT"
-msgstr "Fret PTT"
+msgstr "Doprava PTT"
 
 #: inc/reservation.class.php:1005 inc/reservation.class.php:1043
 msgctxt "status"
 msgid "Nantes shuttle"
-msgstr "Navette Nantes"
+msgstr "Nantes kyvadlová doprava"
 
 #: inc/reservation.class.php:1006 inc/reservation.class.php:1046
 msgctxt "status"
 msgid "Road"
-msgstr "Route"
+msgstr "Cesta"
 
 #: inc/reservation.class.php:1147
 msgid "Items removed from stock on "
-msgstr "Eléments sortis du stock le "
+msgstr ""
 
 #: inc/reservation_item.class.php:284
 msgid "Transfert items"
-msgstr "Sortir du stock les éléments"
+msgstr "Přenesené položky"
 
 #: inc/reservation_item.class.php:312 inc/reservation_item.class.php:847
 msgid "Number reserved"
-msgstr "Quantité réservée"
+msgstr "Počet zarezervovaných"
 
 #: inc/reservation_item.class.php:317
 msgid "Total volume"
-msgstr "Volume total"
+msgstr "Celkový objem"
 
 #: inc/reservation_item.class.php:318
 msgid "Total weight"
-msgstr "Poids total"
+msgstr "Celková hmotnost"
 
 #: inc/reservation_item.class.php:474
 msgid "Select items to send"
-msgstr "Choisir les éléments à envoyer"
+msgstr "Vybrat položky k odeslání"
 
 #: inc/reservation_item.class.php:476
 msgid "Items sended"
-msgstr "Eléments envoyés"
+msgstr ""
 
 #: inc/reservation_item.class.php:503
 msgid "Selection limited"
-msgstr "Sélection n°1"
+msgstr "Výběr omezen"
 
 #: inc/reservation_item.class.php:505
 msgid "Selection by file"
-msgstr "Sélection par injection d'un fichier"
+msgstr "Výběr dle souborů"
 
 #: inc/reservation_item.class.php:580
 msgid "Upload files"
-msgstr "Charger le(s) fichier(s)"
+msgstr "Nahrát soubory"
 
 #: inc/specification.class.php:49
 msgid "Specifications"
-msgstr "Spécifications"
+msgstr "Specifikace"
 
 #: inc/specification.class.php:112
 msgid "can't be calculate"
-msgstr "élément manquants pour le calcul automatique"
+msgstr "není možné spočítat"
