@@ -170,6 +170,7 @@ class PluginGeststockReservation extends CommonDBTM {
 
 
    function prepareInputForAdd($input) {
+      global $DB;
 
       if (empty($input['_itemtype'])) {
          Session::addMessageAfterRedirect(__('Thanks to specify an asset item type', 'geststock'),
@@ -201,6 +202,14 @@ class PluginGeststockReservation extends CommonDBTM {
          Session::addMessageAfterRedirect(__('Location is mandatory to make a reservation', 'geststock'),
                                           false, ERROR);
          return false;
+      }
+
+      if (isset($input['date_whished']) && $input['date_whished']
+          && self::isHoliday($input['date_whished'])) {
+         Session::addMessageAfterRedirect(__('Whished date is a holidy date for gestock entity',
+                                             'geststock'), false, ERROR);
+         return false;
+
       }
       if (!isset($input['date_whished']) || ($input['date_whished'] == '')) {
          $date  = getdate();
@@ -353,25 +362,25 @@ class PluginGeststockReservation extends CommonDBTM {
          echo "<th colspan='8'>TOVA</th></tr>";
 
          echo "<tr class='tab_bg_1'>";
-         echo "<td>".__('Tova date', 'geststock')."</td>";
+         echo "<td> Date Tova</td>";
          echo "<td>";
          Html::showDateField("date_tova", ['value'      => $this->fields["date_tova"],
                                            'maybeempty' => true]);
          echo "</td>";
-         echo "<td>".__('Suitcase number', 'geststock')."</td><td>";
+         echo "<td> Numéro de valise</td><td>";
          Html::autocompletionTextField($this,'number_tova',
                                        ['value' => $this->fields["number_tova"]]);
          echo "</td></tr>";
 
          echo "<tr class='tab_bg_1'>";
-         echo "<td>".__('Suitcase type', 'geststock')."</td><td>";
+         echo "<td> Type de valise</td><td>";
          $params                        = self::getAllStatusTova();
          $params['value']               = !empty($this->fields['type_tova'])
                                           ? $this->fields['type_tova'] : self::SECFREIGHT;
          $params['tova']                = true;
          $params['display_emptychoice'] = true;
          self::dropdownStatus('type_tova', $params);
-         echo "</td><td>".__('Number of packages', 'geststock')."</td><td>";
+         echo "</td><td> Nombre de colis</td><td>";
          Dropdown::showNumber("number_package", ['value' => $this->fields["number_package"],
                                                  'min'   => 1,
                                                  'max'   => 99,
@@ -536,37 +545,46 @@ class PluginGeststockReservation extends CommonDBTM {
          $tab[13] = ['id'             => '13',
                    'table'          => $this->getTable(),
                    'field'          => 'date_tova',
-                   'name'           => __('Tova date', 'geststock'),
+                   'name'           => 'Date Tova',
                    'datatype'       => 'date'];
 
          $tab[14] = ['id'             => '14',
                    'table'          => $this->getTable(),
                    'field'          => 'number_tova',
-                   'name'           => __('Suitcase number', 'geststock'),
+                   'name'           => 'Numéro de valise',
                    'datatype'       => 'text'];
 
          $tab[15] = ['id'             => '15',
                    'table'          => $this->getTable(),
                    'field'          => 'type_tova',
-                   'name'           => __('Suitcase type', 'geststock'),
+                   'name'           => 'Type de valise',
                    'searchtype'     => 'equals',
                    'datatype'       => 'specific'];
 
          $tab[16] = ['id'             => '16',
                    'table'          => $this->getTable(),
                    'field'          => 'number_package',
-                   'name'           => __('Number of packages', 'geststock'),
+                   'name'           => 'Nombre de colis',
                    'datatype'       => 'number'];
       }
 
       $tab[17] = ['id'             => '17',
-               'table'          => 'glpi_plugin_geststock_followups',
-               'field'          => 'locations_id_new',
-               'name'           => __('Actual location', 'geststock'),
-               'massiveaction'  => false,
-               'forcegroupby'   =>  true,
-               'joinparams'     => ['jointype' => 'child'],
-               'nosearch'       => true];
+                  'table'          => 'glpi_plugin_geststock_followups',
+                  'field'          => 'locations_id_new',
+                  'name'           => __('Actual location', 'geststock'),
+                  'massiveaction'  => false,
+                  'forcegroupby'   =>  true,
+                  'joinparams'     => ['jointype' => 'child'],
+                  'nosearch'       => true];
+
+      $tab[18] = ['id'             => '18',
+                  'table'          => 'glpi_plugin_geststock_reservations_items',
+                  'field'          =>  'locations_id_stock',
+                  'name'           =>  __('Stock location', 'geststock'),
+                  'massiveaction'  => false,
+                  'searchtype'     => 'equals',
+                  'datatype'       => 'specific'];
+
       return $tab;
    }
 
@@ -1080,11 +1098,11 @@ class PluginGeststockReservation extends CommonDBTM {
 
       if (PluginGeststockConfig::TOVA == 1) {
          $pdf->setColumnsSize(30,30,40);
-         $pdf->displayLine(sprintf(__('%1$s: %2$s'), '<b><i>'.__('Tova date', 'geststock').'</i></b>',
+         $pdf->displayLine(sprintf(__('%1$s: %2$s'), '<b><i> Date Tova</i></b>',
                                    Html::convDateTime($this->fields['date_tova'])),
-                           sprintf(__('%1$s: %2$s'), '<b><i>'.__('Suitcase number', 'geststock').'</i></b>',
+                           sprintf(__('%1$s: %2$s'), '<b><i> Numéro de valise</i></b>',
                                    $this->fields['number_tova']),
-                           sprintf(__('%1$s: %2$s'), '<b><i>'.__('Suitcase type', 'geststock').'</i></b>',
+                           sprintf(__('%1$s: %2$s'), '<b><i> Type de valise</i></b>',
                                     Html::clean(self::getStatusTova($this->fields['type_tova']))));
       }
 
@@ -1146,5 +1164,35 @@ class PluginGeststockReservation extends CommonDBTM {
                     'date'        =>  $_SESSION["glpi_currenttime"],
                     'users_id'    => Session::getLoginUserID()]);
       }
+   }
+
+
+   static function isHoliday($date) {
+      global $DB;
+
+      $config  = new PluginGeststockConfig();
+      $config->getFromDB(1);
+
+      $query = "SELECT COUNT(*) AS cpt
+                FROM `glpi_calendars_holidays`
+                INNER JOIN `glpi_holidays`
+                     ON (`glpi_calendars_holidays`.`holidays_id` = `glpi_holidays`.`id`)
+                LEFT JOIN `glpi_calendars`
+                     ON (`glpi_calendars_holidays`.`calendars_id` = `glpi_calendars`.`id`)
+                WHERE `glpi_calendars`.`entities_id` = '".$config->fields["entities_id_stock"]."'
+                      AND (('$date' <= `glpi_holidays`.`end_date`
+                            AND '$date' >= `glpi_holidays`.`begin_date`)
+                           OR (`glpi_holidays`.`is_perpetual` = 1
+                               AND MONTH(`end_date`)*100 + DAY(`end_date`)
+                                      >= ".date('nd',strtotime($date))."
+                               AND MONTH(`begin_date`)*100 + DAY(`begin_date`)
+                                      <= ".date('nd',strtotime($date))."
+                               )
+                          )";
+      if ($result = $DB->request($query)) {
+         $row = $result->next();
+         return $row['cpt'];
+      }
+      return false;
    }
 }

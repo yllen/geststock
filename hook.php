@@ -249,3 +249,22 @@ function plugin_geststock_postinit() {
       Plugin::registerClass('PluginGeststockSpecification', array('addtabon' => $mod));
    }
 }
+
+
+function plugin_geststock_addWhere($link, $nott, $type, $id, $val) {
+
+   $searchopt = &Search::getOptions($type);
+   $table = $searchopt[$id]["table"];
+   $field = $searchopt[$id]["field"];
+
+   switch ($type) {
+      case 'PluginGeststockReservation' :
+         if ($table == 'glpi_plugin_geststock_reservations_items') {
+            if ($field == 'locations_id_stock') {
+               return $link." `$table`.`$field` = $val";
+            }
+         }
+         break;
+   }
+   return "";
+}
