@@ -90,7 +90,7 @@ class PluginGeststockGestion extends CommonDBTM {
       global $DB, $CFG_GLPI;
 
       $buttons = [];
-      $buttons["gestion.php?generate=1"]= __('Export models in stock to TOVA', 'geststock');
+      $buttons["gestion.php?generate=1"] = __('Export models in stock', 'geststock');
       Html::displayTitle('', '', '', $buttons);
 
       echo "<table class='tab_cadre_fixe'>";

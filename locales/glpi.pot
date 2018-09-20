@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-16 18:22+0200\n"
+"POT-Creation-Date: 2018-09-20 15:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,29 +17,29 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: hook.php:205 inc/specification.class.php:87
+#: hook.php:206 inc/specification.class.php:87
 msgid "Length"
 msgstr ""
 
-#: hook.php:214 inc/specification.class.php:93
+#: hook.php:215 inc/specification.class.php:93
 msgid "Width"
 msgstr ""
 
-#: hook.php:220 inc/specification.class.php:99
+#: hook.php:221 inc/specification.class.php:99
 msgid "Height"
 msgstr ""
 
-#: hook.php:226 inc/reservation_item.class.php:299
+#: hook.php:227 inc/reservation_item.class.php:309
 #: inc/specification.class.php:105
 msgid "Weight"
 msgstr ""
 
-#: hook.php:232 inc/reservation_item.class.php:298
+#: hook.php:233 inc/reservation_item.class.php:308
 #: inc/specification.class.php:111
 msgid "Volume"
 msgstr ""
 
-#: setup.php:85 inc/gestion.class.php:47 inc/menu.class.php:39
+#: setup.php:82 inc/gestion.class.php:47 inc/menu.class.php:39
 #: inc/profile.class.php:130
 msgid "Stock gestion"
 msgstr ""
@@ -61,32 +61,32 @@ msgstr ""
 msgid "Number selected different from number reserved"
 msgstr ""
 
-#: front/reservation_item.form.php:214 inc/reservation.class.php:172
+#: front/reservation_item.form.php:214 inc/reservation.class.php:176
 msgid "Thanks to specify an asset item type"
 msgstr ""
 
-#: front/reservation_item.form.php:219 inc/reservation.class.php:178
+#: front/reservation_item.form.php:219 inc/reservation.class.php:182
 msgid "Thanks to specify an asset model"
 msgstr ""
 
-#: inc/config.class.php:102
+#: inc/config.class.php:103
 msgid "Entity of stock"
 msgstr ""
 
-#: inc/config.class.php:111
+#: inc/config.class.php:112
 msgid "Status of item in stock"
 msgstr ""
 
-#: inc/config.class.php:120
+#: inc/config.class.php:121
 msgid "status of item in transit"
 msgstr ""
 
-#: inc/config.class.php:129
+#: inc/config.class.php:130
 msgid "Criterion of items"
 msgstr ""
 
-#: inc/followup.class.php:135 inc/reservation_item.class.php:297
-#: inc/reservation_item.class.php:737 inc/reservation_item.class.php:828
+#: inc/followup.class.php:134 inc/reservation_item.class.php:307
+#: inc/reservation_item.class.php:782 inc/reservation_item.class.php:873
 msgid "New location"
 msgstr ""
 
@@ -95,7 +95,7 @@ msgid "See stock"
 msgstr ""
 
 #: inc/gestion.class.php:93
-msgid "Export models in stock to TOVA"
+msgid "Export models in stock"
 msgstr ""
 
 #: inc/gestion.class.php:109
@@ -115,8 +115,8 @@ msgid "Reserved in transit"
 msgstr ""
 
 #: inc/menu.class.php:41 inc/profile.class.php:128
-#: inc/reservation.class.php:125 inc/reservation.class.php:452
-#: inc/reservation_item.class.php:331
+#: inc/reservation.class.php:125 inc/reservation.class.php:466
+#: inc/reservation_item.class.php:341
 msgid "Stock reservation"
 msgid_plural "Stock reservations"
 msgstr[0] ""
@@ -142,182 +142,167 @@ msgctxt "status"
 msgid "Refused"
 msgstr ""
 
-#: inc/reservation.class.php:144 inc/reservation.class.php:188
+#: inc/reservation.class.php:144 inc/reservation.class.php:192
 msgid "Ticket is mandatory to make a reservation"
 msgstr ""
 
-#: inc/reservation.class.php:150 inc/reservation.class.php:193
+#: inc/reservation.class.php:150 inc/reservation.class.php:197
 msgid "Entity is mandatory to make a reservation"
 msgstr ""
 
-#: inc/reservation.class.php:156 inc/reservation.class.php:198
+#: inc/reservation.class.php:156 inc/reservation.class.php:202
 msgid "Location is mandatory to make a reservation"
 msgstr ""
 
-#: inc/reservation.class.php:183
+#: inc/reservation.class.php:187
 msgid "Thanks to specify number of items whished"
 msgstr ""
 
-#: inc/reservation.class.php:282
+#: inc/reservation.class.php:209
+msgid "Whished date is a holidy date for gestock entity"
+msgstr ""
+
+#: inc/reservation.class.php:295 inc/reservation.class.php:583
 msgid "Stock location"
 msgstr ""
 
-#: inc/reservation.class.php:298 inc/reservation.class.php:321
-#: inc/reservation.class.php:494 inc/reservation.class.php:1054
+#: inc/reservation.class.php:311 inc/reservation.class.php:334
+#: inc/reservation.class.php:508 inc/reservation.class.php:1079
 msgid "Delivery entity"
 msgstr ""
 
-#: inc/reservation.class.php:304 inc/reservation.class.php:321
-#: inc/reservation.class.php:475 inc/reservation.class.php:1058
+#: inc/reservation.class.php:317 inc/reservation.class.php:334
+#: inc/reservation.class.php:489 inc/reservation.class.php:1083
 msgid "Delivery location"
 msgstr ""
 
-#: inc/reservation.class.php:329 inc/reservation.class.php:527
-#: inc/reservation.class.php:1069 inc/reservation_item.class.php:226
+#: inc/reservation.class.php:342 inc/reservation.class.php:541
+#: inc/reservation.class.php:1094 inc/reservation_item.class.php:226
 msgid "Delivery date"
 msgstr ""
 
-#: inc/reservation.class.php:351 inc/reservation.class.php:533
-#: inc/reservation.class.php:1075 inc/reservation_item.class.php:239
-msgid "Tova date"
-msgstr ""
-
-#: inc/reservation.class.php:356 inc/reservation.class.php:539
-#: inc/reservation.class.php:1077 inc/reservation_item.class.php:242
-msgid "Suitcase number"
-msgstr ""
-
-#: inc/reservation.class.php:362 inc/reservation.class.php:545
-#: inc/reservation.class.php:1079 inc/reservation_item.class.php:244
-msgid "Suitcase type"
-msgstr ""
-
-#: inc/reservation.class.php:369 inc/reservation.class.php:552
-msgid "Number of packages"
-msgstr ""
-
-#: inc/reservation.class.php:514 inc/reservation.class.php:1071
+#: inc/reservation.class.php:528 inc/reservation.class.php:1096
 #: inc/reservation_item.class.php:231
 msgid "Receipt date"
 msgstr ""
 
-#: inc/reservation.class.php:558 inc/reservation_item.class.php:296
-#: inc/reservation_item.class.php:735 inc/reservation_item.class.php:828
+#: inc/reservation.class.php:574 inc/reservation_item.class.php:306
+#: inc/reservation_item.class.php:780 inc/reservation_item.class.php:873
 msgid "Actual location"
 msgstr ""
 
-#: inc/reservation.class.php:771
+#: inc/reservation.class.php:796
 msgid "No free item"
 msgstr ""
 
-#: inc/reservation.class.php:944
+#: inc/reservation.class.php:969
 msgid "can't create a ticket for ticket type incident"
 msgstr ""
 
-#: inc/reservation.class.php:949
+#: inc/reservation.class.php:974
 msgid "Reservation present in dustbin"
 msgstr ""
 
-#: inc/reservation.class.php:957
+#: inc/reservation.class.php:982
 msgid "Add a reservation"
 msgstr ""
 
-#: inc/reservation.class.php:964
+#: inc/reservation.class.php:989
 msgid "Create a reservation from this ticket"
 msgstr ""
 
-#: inc/reservation.class.php:986 inc/reservation.class.php:1006
+#: inc/reservation.class.php:1011 inc/reservation.class.php:1031
 msgctxt "status"
 msgid "Accompanied"
 msgstr ""
 
-#: inc/reservation.class.php:987 inc/reservation.class.php:1009
+#: inc/reservation.class.php:1012 inc/reservation.class.php:1034
 msgctxt "status"
 msgid "Accompanied RAILWAY"
 msgstr ""
 
-#: inc/reservation.class.php:988 inc/reservation.class.php:1012
+#: inc/reservation.class.php:1013 inc/reservation.class.php:1037
 msgctxt "status"
 msgid "Flight department"
 msgstr ""
 
-#: inc/reservation.class.php:989 inc/reservation.class.php:1015
+#: inc/reservation.class.php:1014 inc/reservation.class.php:1040
 msgctxt "status"
 msgid "Mail"
 msgstr ""
 
-#: inc/reservation.class.php:990 inc/reservation.class.php:1018
+#: inc/reservation.class.php:1015 inc/reservation.class.php:1043
 msgctxt "status"
 msgid "Accompanied mail"
 msgstr ""
 
-#: inc/reservation.class.php:991 inc/reservation.class.php:1021
+#: inc/reservation.class.php:1016 inc/reservation.class.php:1046
 msgctxt "status"
 msgid "Secure freight"
 msgstr ""
 
-#: inc/reservation.class.php:992 inc/reservation.class.php:1024
+#: inc/reservation.class.php:1017 inc/reservation.class.php:1049
 msgctxt "status"
 msgid "Freight"
 msgstr ""
 
-#: inc/reservation.class.php:993 inc/reservation.class.php:1027
+#: inc/reservation.class.php:1018 inc/reservation.class.php:1052
 msgctxt "status"
 msgid "Freight RAILWAY"
 msgstr ""
 
-#: inc/reservation.class.php:994 inc/reservation.class.php:1030
+#: inc/reservation.class.php:1019 inc/reservation.class.php:1055
 msgctxt "status"
 msgid "Freight PTT"
 msgstr ""
 
-#: inc/reservation.class.php:995 inc/reservation.class.php:1033
+#: inc/reservation.class.php:1020 inc/reservation.class.php:1058
 msgctxt "status"
 msgid "Nantes shuttle"
 msgstr ""
 
-#: inc/reservation.class.php:996 inc/reservation.class.php:1036
+#: inc/reservation.class.php:1021 inc/reservation.class.php:1061
 msgctxt "status"
 msgid "Road"
 msgstr ""
 
-#: inc/reservation.class.php:1135
+#: inc/reservation.class.php:1162
 msgid "Items removed from stock on "
 msgstr ""
 
-#: inc/reservation_item.class.php:267
+#: inc/reservation_item.class.php:277
 msgid "Transfert items"
 msgstr ""
 
-#: inc/reservation_item.class.php:295 inc/reservation_item.class.php:827
+#: inc/reservation_item.class.php:305 inc/reservation_item.class.php:872
 msgid "Number reserved"
 msgstr ""
 
-#: inc/reservation_item.class.php:300
+#: inc/reservation_item.class.php:310
 msgid "Total volume"
 msgstr ""
 
-#: inc/reservation_item.class.php:301
+#: inc/reservation_item.class.php:311
 msgid "Total weight"
 msgstr ""
 
-#: inc/reservation_item.class.php:455
+#: inc/reservation_item.class.php:465
 msgid "Select items to send"
 msgstr ""
 
-#: inc/reservation_item.class.php:457
+#: inc/reservation_item.class.php:467
 msgid "Items sended"
 msgstr ""
 
-#: inc/reservation_item.class.php:484
+#: inc/reservation_item.class.php:494
 msgid "Selection limited"
 msgstr ""
 
-#: inc/reservation_item.class.php:486
+#: inc/reservation_item.class.php:496
 msgid "Selection by file"
 msgstr ""
 
-#: inc/reservation_item.class.php:561
+#: inc/reservation_item.class.php:571
 msgid "Upload files"
 msgstr ""
 
