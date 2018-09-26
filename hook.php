@@ -141,6 +141,7 @@ function plugin_geststock_giveItem($type, $ID, $data, $num) {
                    && ($type == "PluginSimcardSimcard")) {
                  $table = 'glpi_plugin_simcard_simcardtypes';
                }
+               if (!empty($table)) {
                   $query = "SELECT `".$table."`.`$column`, `nbrereserv`
                             FROM `glpi_plugin_geststock_reservations_items`, `".$table."`
                             WHERE `".$table."`.`id`
@@ -249,4 +250,23 @@ function plugin_geststock_getAddSearchOptions($itemtype) {
                  'datatype'   => 'decimal'];
     }
     return $tab;
+}
+
+
+function plugin_geststock_addWhere($link, $nott, $type, $id, $val) {
+
+   $searchopt = &Search::getOptions($type);
+   $table = $searchopt[$id]["table"];
+   $field = $searchopt[$id]["field"];
+
+   switch ($type) {
+      case 'PluginGeststockReservation' :
+         if ($table == 'glpi_plugin_geststock_reservations_items') {
+            if ($field == 'locations_id_stock') {
+               return $link." `$table`.`$field` = $val";
+            }
+         }
+         break;
+   }
+   return "";
 }

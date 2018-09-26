@@ -244,12 +244,12 @@ class PluginGeststockReservation_Item extends CommonDBChild {
          echo "<th colspan='4'>TOVA</th></tr>";
 
          echo "<tr class='tab_bg_1'>";
-         echo "<td>".__('Tova date', 'geststock')."&nbsp;&nbsp;";
+         echo "<td>Date Tova&nbsp;&nbsp;";
          echo Html::convDate($resa->fields["date_tova"]);
          echo "</td>";
-         echo "<td>".__('Suitcase number', 'geststock')."&nbsp;&nbsp;".$resa->fields['number_tova'];
+         echo "<td>Numéro de valise&nbsp;&nbsp;".$resa->fields['number_tova'];
          echo "</td>";
-         echo "<td>".__('Suitcase type', 'geststock')."&nbsp;&nbsp;";
+         echo "<td>Type de valise&nbsp;&nbsp;";
          echo PluginGeststockReservation::getStatusTova($resa->fields['type_tova']);
          echo "</td></tr>";
       }
@@ -676,6 +676,41 @@ class PluginGeststockReservation_Item extends CommonDBChild {
                 'datatype'       => 'specific'];
 
       return $tab;
+   }
+
+
+   static function getSpecificValueToSelect($field, $name='', $values='', array $options=[]) {
+
+      if (!is_array($values)) {
+         $values = [$field => $values];
+      }
+      $options['display'] = false;
+
+      switch ($field) {
+         case 'locations_id_stock' :
+            $options['value']        = $values[$field];
+            $options['name']         = $name;
+            $options['entity']       = 0;
+            $options['entity_sons']  = true;
+            $options[$field]         = $values[$field];;
+            return Location::dropdown($options);
+
+      }
+      return parent::getSpecificValueToSelect($field, $name, $values, $options);
+   }
+
+
+   static function getSpecificValueToDisplay($field, $values, array $options=[]) {
+
+      if (!is_array($values)) {
+         $values = [$field => $values];
+      }
+
+      switch ($field) {
+         case 'locations_id_stock' :
+            return Dropdown::getDropdownName('glpi_locations', $values[$field]);
+      }
+      return parent::getSpecificValueToDisplay($field, $values, $options);
    }
 
 
