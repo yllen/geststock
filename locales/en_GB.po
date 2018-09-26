@@ -45,6 +45,10 @@ msgstr ""
 msgid "Stock gestion"
 msgstr ""
 
+#: front/reservation.form.php:76
+msgid "New reservation created on "
+msgstr ""
+
 #: front/reservation_item.form.php:99
 msgid "The item with this number is not free"
 msgstr ""
@@ -254,6 +258,10 @@ msgstr ""
 #: inc/reservation.class.php:909 inc/reservation.class.php:949
 msgctxt "status"
 msgid "Road"
+msgstr ""
+
+#: inc/reservation.class.php:1135
+msgid "Items removed from stock on "
 msgstr ""
 
 #: inc/reservation_item.class.php:236
