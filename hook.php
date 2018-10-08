@@ -105,6 +105,14 @@ function plugin_geststock_uninstall() {
       Toolbox::deleteDir(GLPI_PLUGIN_DOC_DIR.'/geststock');
    }
 
+
+   $itemtypes = ['DisplayPreference', 'Bookmark', 'Log', 'Notepad'];
+   foreach ($itemtypes as $itemtype) {
+      $item = new $itemtype;
+      $item->deleteByCriteria(array('itemtype' => 'PluginGeststockReservation'));
+   }
+
+
    return true;
 }
 
