@@ -50,7 +50,7 @@ class PluginGeststockFollowup extends CommonDBTM {
                      KEY `locations_id_old` (locations_id_old),
                      KEY `locations_id_new` (locations_id_new),
                      KEY `users_id` (users_id)
-                   ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+                   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
          $DB->queryOrDie($query, 'Error in creating glpi_plugin_geststock_followups'.
                "<br>".$DB->error());
@@ -123,7 +123,7 @@ class PluginGeststockFollowup extends CommonDBTM {
    }
 
 
-   static function getSearchOptionstoAdd($itemtype=null) {
+   static function rawSearchOptionstoAdd($itemtype=null) {
 
       $tab = [];
 

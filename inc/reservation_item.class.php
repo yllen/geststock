@@ -264,7 +264,8 @@ class PluginGeststockReservation_Item extends CommonDBChild {
       foreach ($DB->request("glpi_plugin_geststock_reservations_items",
             ['plugin_geststock_reservations_id' => $resa->fields['id']]) as $resait) {
                $resaitem = $resait['id'];
-               if ($nbre->getFromDBByQuery("WHERE `plugin_geststock_reservations_items_id` = $resaitem")) {
+               if ($nbre->getFromDBByRequest(['WHERE' => ['plugin_geststock_reservations_items_id'
+                                                            => $resaitem]])) {
                   $num  = importArrayFromDB($nbre->fields['otherserial']);
                   if (count($num) == $resait['nbrereserv']) {
                      $display = true;
@@ -636,7 +637,7 @@ class PluginGeststockReservation_Item extends CommonDBChild {
                      UNIQUE `unicity` (`plugin_geststock_reservations_id`,`models_id`,`itemtype`, `locations_id_stock`),
                      KEY `plugin_geststock_reservations_id` (`plugin_geststock_reservations_id`),
                      KEY `item` (`itemtype`,`models_id`)
-                   ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+                   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
          $DB->queryOrDie($query, 'Error in creating glpi_plugin_geststock_reservations_items'.
                          "<br>".$DB->error());
@@ -656,7 +657,7 @@ class PluginGeststockReservation_Item extends CommonDBChild {
    }
 
 
-   function getSearchOptionsNew() {
+   function rawSearchOptions() {
 
       $tab = [];
 

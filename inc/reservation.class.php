@@ -436,7 +436,7 @@ class PluginGeststockReservation extends CommonDBTM {
                     KEY `entities_id_deliv` (`entities_id_deliv`),
                     KEY `locations_id` (`locations_id`),
                     KEY `tickets_id` (`tickets_id`)
-                  ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
          $DB->queryOrDie($query, 'Error in creating glpi_plugin_geststock_reservations'.
                          "<br>".$DB->error());
@@ -456,7 +456,7 @@ class PluginGeststockReservation extends CommonDBTM {
    }
 
 
-   function getSearchOptionsNew() {
+   function rawSearchOptions() {
 
       $tab = [];
 
@@ -915,7 +915,6 @@ class PluginGeststockReservation extends CommonDBTM {
 
       return Dropdown::showFromArray($name, $items, $params);
    }
-
 
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {

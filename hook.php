@@ -31,7 +31,7 @@
 function plugin_geststock_install() {
    global $DB;
 
-   $migration = new Migration(10);
+   $migration = new Migration(120);
 
    include_once(GLPI_ROOT."/plugins/geststock/inc/gestion.class.php");
 
@@ -102,6 +102,12 @@ function plugin_geststock_uninstall() {
 
    if (is_dir(GLPI_PLUGIN_DOC_DIR.'/geststock')) {
       Toolbox::deleteDir(GLPI_PLUGIN_DOC_DIR.'/geststock');
+   }
+
+   $itemtypes = ['DisplayPreference', 'Bookmark', 'Log', 'Notepad'];
+   foreach ($itemtypes as $itemtype) {
+      $item = new $itemtype;
+      $item->deleteByCriteria(array('itemtype' => 'PluginGeststockReservation'));
    }
 
    return true;

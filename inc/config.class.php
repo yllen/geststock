@@ -58,7 +58,7 @@ class PluginGeststockConfig extends CommonDBTM {
                      KEY `entities_id_stock` (`entities_id_stock`),
                      KEY `stock_status` (`stock_status`),
                      KEY `transit_status` (`transit_status`)
-                   ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+                   ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
          $DB->queryOrDie($query, 'Error in creating glpi_plugin_geststock_configs'.
                                  "<br>".$DB->error());
       } else { // migration for maedi

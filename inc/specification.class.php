@@ -147,7 +147,7 @@ class PluginGeststockSpecification extends CommonDBTM {
                      `date_mod` datetime DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE `unicity` (`models_id`, `itemtype`)
-                  ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
           $DB->queryOrDie($query, 'Error in creating glpi_plugin_geststock_specifications'.
                            "<br>".$DB->error());

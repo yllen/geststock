@@ -86,7 +86,7 @@ class PluginGeststockReservation_Item_Number extends CommonDBChild {
                      KEY `plugin_geststock_reservations_items_id` (`plugin_geststock_reservations_items_id`),
                      KEY `users_id` (users_id),
                      KEY `item` (`itemtype`,`models_id`)
-                   ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+                   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
          $DB->queryOrDie($query, 'Error in creating glpi_plugin_geststock_reservations_items_numbers'.
                "<br>".$DB->error());

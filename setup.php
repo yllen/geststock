@@ -81,21 +81,21 @@ function plugin_init_geststock() {
 function plugin_version_geststock() {
 
    return ['name'           => __('Stock gestion', 'geststock'),
-           'version'        => '1.1.0',
+           'version'        => '1.2.0',
            'author'         => 'Nelly Mahu-Lasson',
            'license'        => 'GPLv3+',
            'homepage'       => '',
-           'minGlpiVersion' => '9.2',
-           'page'           => "/front/reservation.php"
-   ];
-
+           'page'           => "/front/reservation.php",
+           'minGlpiVersion' => '9.3',
+           'requirements'   => ['glpi' => ['min' => '9.3',
+                                           'max' => '9.4']]];
 }
 
 
 function plugin_geststock_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION,'9.2','lt') || version_compare(GLPI_VERSION,'9.3','ge')) {
-      echo "This plugin requires GLPI >= 9.2 and GLPI < 9.3";
+   if (version_compare(GLPI_VERSION,'9.3','lt') || version_compare(GLPI_VERSION,'9.4','ge')) {
+      echo "This plugin requires GLPI >= 9.3 and GLPI < 9.4";
       return false;
    }
    return true;

@@ -140,7 +140,7 @@ if (isset($_POST["upload"])) {
       $resaitem = $resait['id'];
       // not in post, so deleted
       if (!isset($_POST['itemtype'][$resaitem])) {
-         if ($nbre->getFromDBByQuery("WHERE `plugin_geststock_reservations_items_id` = $resaitem")) {
+         if ($nbre->getFromDBByRequest(['WHERE' => ['plugin_geststock_reservations_items_id' => $resaitem]])) {
             $num  = importArrayFromDB($nbre->fields['otherserial']);
             $type = $nbre->fields['itemtype'];
             $item = new $type();
@@ -163,7 +163,7 @@ if (isset($_POST["upload"])) {
                   if (count($data) == $resait['nbrereserv']) {
                      //check if number already exists
                      $num = [];
-                     if (!$nbre->getFromDBByQuery("WHERE `plugin_geststock_reservations_items_id` = $resaitem")) {
+                     if (!$nbre->getFromDBByRequest(['WHERE' => ['plugin_geststock_reservations_items_id' => $resaitem]])) {
                         $input = ['plugin_geststock_reservations_items_id' => $resaitem,
                                   'itemtype'                               => $type,
                                   'models_id'                              => $mod,
