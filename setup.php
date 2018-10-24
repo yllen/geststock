@@ -59,6 +59,8 @@ function plugin_init_geststock() {
 
    $PLUGIN_HOOKS['change_profile']['geststock']   = ['PluginGeststockProfile','initProfile'];
 
+   $PLUGIN_HOOKS['pre_item_update']['geststock'] = ['Ticket' => ['PluginGeststockTicket', 'beforeUpdate']];
+
    $PLUGIN_HOOKS['item_update']['geststock'] = ['Ticket' => ['PluginGeststockTicket', 'afterUpdate']];
 
 
@@ -80,7 +82,7 @@ function plugin_init_geststock() {
 function plugin_version_geststock() {
 
    return ['name'           => __('Stock gestion', 'geststock'),
-           'version'        => '1.0.2',
+           'version'        => '1.0.1',
            'author'         => 'Nelly Mahu-Lasson',
            'license'        => 'GPLv3+',
            'homepage'       => '',
