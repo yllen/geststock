@@ -40,9 +40,12 @@ class PluginGeststockTicket {
 
          $reservation = new PluginGeststockReservation();
          // transfert only if not done
-         if ($reservation->getFromDB($resa['id'])
-             && is_null($resa['receipt_date'])) {
-            $reservation->transfertItem($ticket->input['id']);
+         foreach ($DB->request('glpi_plugin_geststock_reservations',
+                               ['tickets_id' => $ticket->input['id']]) as $resa) {
+            if ($reservation->getFromDB($resa['id'])
+                 && is_null($resa['receipt_date'])) {
+               $reservation->transfertItem($ticket->input['id']);
+            }
          }
       }
    }
@@ -69,7 +72,7 @@ class PluginGeststockTicket {
                   $count    = $resait['nbrereserv'];
                   if ($nbre->getFromDBByQuery("WHERE `plugin_geststock_reservations_items_id` = $resaitid")) {
                      $num  = importArrayFromDB($nbre->fields['otherserial']);
-                     if ($count <> $num) {
+                     if ($count <> count($num)) {
                         Session::addMessageAfterRedirect(__('Number selected different from number reserved',
                                                             'geststock'), false, ERROR);
                         $ticket->input['status'] = $ticket->fields['status'];
