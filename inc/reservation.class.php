@@ -1128,8 +1128,11 @@ class PluginGeststockReservation extends CommonDBTM {
                                ['plugin_geststock_reservations_id' => $resa['id']]) as $ri) {
             foreach ($DB->request('glpi_plugin_geststock_reservations_items_numbers',
                                   ['plugin_geststock_reservations_items_id' => $ri['id']]) as $nbre) {
-               $item = new $ri['itemtype']();
+
+               $item        = new $ri['itemtype']();
                $otherserial = importArrayFromDB($nbre['otherserial']);
+               $listexport  = [];
+
                foreach ($otherserial as $serial => $val) {
                   if ($item->getFromDB($val)) {
                      //Teste si l'élément est bien en transit (c'est à dire non modifié manuellement) JMC
@@ -1140,6 +1143,7 @@ class PluginGeststockReservation extends CommonDBTM {
                                        'locations_id'  => $resa['locations_id'],
                                        'states_id'     => $config->fields['stock_status']]);
                      }
+                     $listexport[] = $item->getField($config->fields['criterion']);
                   } else {
                      break;
                   }
@@ -1160,7 +1164,7 @@ class PluginGeststockReservation extends CommonDBTM {
          $fup->add(['tickets_id'  => $ticket,
                     'content'     => sprintf(__('%1$s %2$s'),
                                              __('Items removed from stock on ', 'geststock'),
-                                             $_SESSION["glpi_currenttime"]),
+                                             $_SESSION["glpi_currenttime"]." (".implode(',',$listexport).")"),
                     'date'        =>  $_SESSION["glpi_currenttime"],
                     'users_id'    => Session::getLoginUserID()]);
        }
