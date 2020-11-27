@@ -41,4 +41,44 @@ class PluginGeststockTicket {
       }
    }
 
+
+   static function beforeUpdate(Ticket $ticket) {
+      global $DB;
+
+      if (isset($ticket->input['status'])
+          && ($ticket->input['status'] == CommonITILObject::CLOSED)) {
+
+         $resaitem    = new PluginGeststockReservation_Item();
+         $nbre        = new PluginGeststockReservation_Item_Number();
+
+         foreach ($DB->request('glpi_plugin_geststock_reservations',
+                               ['tickets_id' => $ticket->input['id']]) as $resa) {
+
+            // no transfert if count items selected <> items reserved
+            $resaid = $resa['id'];
+            if ($resaitem->getFromDBByQuery("WHERE `plugin_geststock_reservations_id` = $resaid")) {
+               foreach ($DB->request("glpi_plugin_geststock_reservations_items",
+                                     ['plugin_geststock_reservations_id' => $resa['id']]) as $resait) {
+                  $resaitid = $resait['id'];
+                  $count    = $resait['nbrereserv'];
+                  if ($nbre->getFromDBByQuery("WHERE `plugin_geststock_reservations_items_id` = $resaitid")) {
+                     $num  = importArrayFromDB($nbre->fields['otherserial']);
+                     if ($count <> count($num)) {
+                        Session::addMessageAfterRedirect(__('Number selected different from number reserved',
+                                                            'geststock'), false, ERROR);
+                        $ticket->input['status'] = $ticket->fields['status'];
+                     }
+                  } else {
+                     Session::addMessageAfterRedirect(__('Number selected different from number reserved',
+                                                         'geststock'), false, ERROR);
+                     $ticket->input['status'] = $ticket->fields['status'];
+                  }
+               }
+            } else {
+               Session::addMessageAfterRedirect(__('No number selected ', 'geststock'), false, ERROR);
+               $ticket->input['status'] = $ticket->fields['status'];
+            }
+         }
+      }
+   }
 }
