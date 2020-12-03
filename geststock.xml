@@ -6,12 +6,14 @@
     <logo></logo>
     <description>
         <short>
-            <fr>Gestion de stock centralisé pour le matériel</fr>
+            <cs>Globální správa skladu majetku</cs>
             <en>Global management for stock of assets</en>
+            <fr>Gestion de stock centralisé pour le matériel</fr>
         </short>
         <long>
-            <fr>Ce plugin permet de gérer d'une manière globale le stock des éléments de l'inventaire et ce pour toutes les entités. Une entité réserve un matériel et l'acheminement est suivi du départ du stock jusqu'à l'entité demandresse.</fr>
+            <cs>Tento zásuvný modul umožňuje spravovat globálním způsobem sklad položek majetku a toto pro všechny entity. Entita zarezervuje majetek a pohyb je sledován od vydání ze skladu až po požadující entitu.</cs>
             <en>This plugin allows you to manage in a global way the stock of asset items and this for all entities. An entity reserves an asset and the routing is followed since the output of the stock to the requested entity.</en>
+            <fr>Ce plugin permet de gérer d'une manière globale le stock des éléments de l'inventaire et ce pour toutes les entités. Une entité réserve un matériel et l'acheminement est suivi du départ du stock jusqu'à l'entité demandresse.</fr>
         </long>
     </description>
     <homepage>https://github.com/yllen/geststock</homepage>
@@ -23,23 +25,40 @@
     </authors>
     <versions>
         <version>
+            <num>1.2.0</num>
+            <compatibility>9.3.x</compatibility>
+        </version>
+        <version>
+            <num>1.1.1</num>
+            <compatibility>9.2.x</compatibility>
+        </version>
+        <version>
+            <num>1.1.0</num>
+            <compatibility>9.2.x</compatibility>
+        </version>
+        <version>
             <num>1.0.0</num>
             <compatibility>9.1.x</compatibility>
         </version>
     </versions>
     <langs>
-        <lang>fr_FR</lang>
+        <lang>cs_CZ</lang>
         <lang>en_GB</lang>
+        <lang>fr_FR</lang>
     </langs>
     <license>AGPLv3</license>
     <tags>
-        <fr>
-            <tag>Gestion</tag>
-            <tag>Inventaire</tag>
-        </fr>
+        <cs>
+            <tag>majetek</tag>
+            <tag>inventura</tag>
+        </cs>
         <en>
             <tag>Asset</tag>
             <tag>inventory</tag>
         </en>
+        <fr>
+            <tag>Gestion</tag>
+            <tag>Inventaire</tag>
+        </fr>
     </tags>
 </root>
