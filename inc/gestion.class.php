@@ -20,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2018 GestStock plugin team
+ @copyright Copyright (c) 2017-2020 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -70,11 +70,17 @@ class PluginGeststockGestion extends CommonDBTM {
 
    static function showSummary() {
 
+      $dbu = new DbUtils();
+
       echo "<div class='center'><table class='tab_cadre' cellpadding='5' width='50%'>";
       echo "<tr><th>".__('Summary')."</th></tr>";
 
       echo "<tr class='tab_bg_1'><td>";
-      echo "<a href='gestion.php'>".__('See stock', 'geststock')."</a>";
+      if ($dbu->countElementsInTable('glpi_plugin_geststock_configs') > 0) {
+         echo "<a href='gestion.php'>".__('See stock', 'geststock')."</a>";
+      } else {
+         echo "<a href='config.form.php'>".__('Plugin not configurated', 'geststock')."</a>";
+      }
       echo "</td></tr>";
 
       echo "</table></div>";

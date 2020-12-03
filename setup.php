@@ -20,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2018 GestStock plugin team
+ @copyright Copyright (c) 2017-2020 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -81,21 +81,21 @@ function plugin_init_geststock() {
 function plugin_version_geststock() {
 
    return ['name'           => __('Stock gestion', 'geststock'),
-           'version'        => '1.2.0',
+           'version'        => '1.3.0',
            'author'         => 'Nelly Mahu-Lasson',
            'license'        => 'GPLv3+',
            'homepage'       => '',
            'page'           => "/front/reservation.php",
-           'minGlpiVersion' => '9.3',
-           'requirements'   => ['glpi' => ['min' => '9.3',
-                                           'max' => '9.4']]];
+           'minGlpiVersion' => '9.4',
+           'requirements'   => ['glpi' => ['min' => '9.4',
+                                           'max' => '9.5']]];
 }
 
 
 function plugin_geststock_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION,'9.3','lt') || version_compare(GLPI_VERSION,'9.4','ge')) {
-      echo "This plugin requires GLPI >= 9.3 and GLPI < 9.4";
+   if (version_compare(GLPI_VERSION,'9.4','lt') || version_compare(GLPI_VERSION,'9.5','ge')) {
+      echo "This plugin requires GLPI >= 9.4 and GLPI < 5";
       return false;
    }
    return true;

@@ -20,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2018 GestStock plugin team
+ @copyright Copyright (c) 2017-2020 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -222,22 +222,6 @@ class PluginGeststockReservation extends CommonDBTM {
          }
          $input['date_whished'] = $datewhished;
        }
-
-      if ((PluginGeststockConfig::TOVA == 1)
-          && (!isset($input['date_tova']) || ($input['date_tova'] == ''))) {
-         $date  = getdate();
-         $hours = $date['hours'];
-         if ($date['hours'] < '16') {
-            // date à J+1
-            $datetova = date("Y-m-d", strtotime($_SESSION["glpi_currenttime"])
-                              +1*DAY_TIMESTAMP);
-         } else {
-            // date à J+2
-            $datetova = date("Y-m-d", strtotime($_SESSION["glpi_currenttime"])
-                              +2*DAY_TIMESTAMP);
-         }
-         $input['date_tova'] = $datetova;
-      }
 
       return  $input;
    }
@@ -704,11 +688,11 @@ class PluginGeststockReservation extends CommonDBTM {
                              'FROM'    => 'glpi_plugin_geststock_reservations']) as $data) {
          $ticketlist[] = $data['tickets_id'];
       }
-      $condition = "`glpi_tickets`.`status`
-                      NOT IN ('".implode("', '", array_merge(Ticket::getSolvedStatusArray(),
-                                                             Ticket::getClosedStatusArray()))."')
-                      AND `glpi_tickets`.`id` NOT IN ('".implode("', '", $ticketlist)."')
-                      AND `glpi_tickets`.`type` = ".Ticket::DEMAND_TYPE;
+
+      $condition = [['NOT' => ['status' => implode("', '", array_merge(Ticket::getSolvedStatusArray(),
+                                  Ticket::getClosedStatusArray()))]],
+                    ['NOT' => ['id' => implode("', '", $ticketlist)]],
+                    'type' => Ticket::DEMAND_TYPE];
 
       Ticket::dropdown(['width'     => '80%',
                         'name'      => $name,
@@ -1128,8 +1112,11 @@ class PluginGeststockReservation extends CommonDBTM {
                                ['plugin_geststock_reservations_id' => $resa['id']]) as $ri) {
             foreach ($DB->request('glpi_plugin_geststock_reservations_items_numbers',
                                   ['plugin_geststock_reservations_items_id' => $ri['id']]) as $nbre) {
-               $item = new $ri['itemtype']();
+
+               $item        = new $ri['itemtype']();
                $otherserial = importArrayFromDB($nbre['otherserial']);
+               $listexport  = [];
+
                foreach ($otherserial as $serial => $val) {
                   if ($item->getFromDB($val)) {
                      //Teste si l'élément est bien en transit (c'est à dire non modifié manuellement) JMC
@@ -1140,6 +1127,7 @@ class PluginGeststockReservation extends CommonDBTM {
                                        'locations_id'  => $resa['locations_id'],
                                        'states_id'     => $config->fields['stock_status']]);
                      }
+                     $listexport[] = $item->getField($config->fields['criterion']);
                   } else {
                      break;
                   }
@@ -1156,11 +1144,12 @@ class PluginGeststockReservation extends CommonDBTM {
                                   'status'        => $config->fields['transit_status']]);
          }
 
-         $fup = new TicketFollowup();
-         $fup->add(['tickets_id'  => $ticket,
+         $fup = new ITILFollowup();
+         $fup->add(['itemtype'    => 'Ticket',
+                    'items_id'    => $ticket,
                     'content'     => sprintf(__('%1$s %2$s'),
                                              __('Items removed from stock on ', 'geststock'),
-                                             $_SESSION["glpi_currenttime"]),
+                                             $_SESSION["glpi_currenttime"]." (".implode(',',$listexport).")"),
                     'date'        =>  $_SESSION["glpi_currenttime"],
                     'users_id'    => Session::getLoginUserID()]);
        }
@@ -1184,11 +1173,11 @@ class PluginGeststockReservation extends CommonDBTM {
                             AND '$date' >= `glpi_holidays`.`begin_date`)
                            OR (`glpi_holidays`.`is_perpetual` = 1
                                AND MONTH(`end_date`)*100 + DAY(`end_date`)
-                                      >= ".date('nd',strtotime($date))."
+                                                                >= ".date('nd',strtotime($date))."
                                AND MONTH(`begin_date`)*100 + DAY(`begin_date`)
-                                      <= ".date('nd',strtotime($date))."
-                               )
-                          )";
+                                                                <= ".date('nd',strtotime($date))."
+                              )
+                           )";
       if ($result = $DB->request($query)) {
          $row = $result->next();
             return $row['cpt'];

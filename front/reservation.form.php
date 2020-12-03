@@ -20,13 +20,15 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2018 GestStock plugin team
+ @copyright Copyright (c) 2017-2020 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
  @since     version 1.0.0
  --------------------------------------------------------------------------
  */
+
+use Glpi\Event;
 
 include ("../../../inc/includes.php");
 
@@ -39,7 +41,7 @@ if (!isset($_GET["id"])) {
 $PluginReservation = new PluginGeststockReservation();
 $PluginItem        = new PluginGeststockReservation_Item();
 $PluginFup         = new PluginGeststockFollowup();
-$Fup               = new TicketFollowup();
+$Fup               = new ITILFollowup();
 
 if (isset($_POST["add"])) {
    $PluginReservation->check(-1, CREATE, $_POST);
@@ -70,9 +72,10 @@ if (isset($_POST["add"])) {
                                 'locations_id_old'                       => $lieu,
                                 'users_id'                               => Session::getLoginUserID()]);
 
-               $Fup->add(['tickets_id'  => $_POST['tickets_id'],
+               $Fup->add(['itemtype'    => 'Ticket',
+                          'items_id'    => $_POST['tickets_id'],
                           'content'     => sprintf(__('%1$s %2$s'),
-                                                   __('New reservation created on', 'geststock'),
+                                                   __('New reservation created on ', 'geststock'),
                                                    sprintf(__('%1$s (%2$s)'),
                                                            $_SESSION["glpi_currenttime"],
                                                            $newID)),

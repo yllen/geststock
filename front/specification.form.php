@@ -20,13 +20,14 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2018 GestStock plugin team
+ @copyright Copyright (c) 2017-2020 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
  @since     version 1.0.0
  --------------------------------------------------------------------------
  */
+use Glpi\Event;
 
 include ("../../../inc/includes.php");
 
