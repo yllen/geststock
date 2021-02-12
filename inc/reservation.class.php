@@ -20,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2020 GestStock plugin team
+ @copyright Copyright (c) 2017-2021 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -158,9 +158,9 @@ class PluginGeststockReservation extends CommonDBTM {
       }
 
       if ((PluginGeststockConfig::TOVA == 1)
-          && (isset($input['date_tova']) && ($this->fields['date_tova'] != $input['date_tova']))
-          && isset($this->fields['date_whished']) && ($this->fields['date_whished'] > $date)) {
-         $input['date_whished'] = $input['date_tova'];
+          && (isset($input['date_whished']) && ($this->fields['date_whished'] != $input['date_whished']))
+          && ($this->fields['date_tova'] < $input['date_whished'])) {
+         $input['date_whished'] = $this->fields['date_tova'];
       }
 
       return parent::prepareInputForUpdate($input);
@@ -223,6 +223,21 @@ class PluginGeststockReservation extends CommonDBTM {
          $input['date_whished'] = $datewhished;
        }
 
+       if ((PluginGeststockConfig::TOVA == 1)
+           && (!isset($input['date_tova']) || ($input['date_tova'] == ''))) {
+          $date  = getdate();
+          $hours = $date['hours'];
+          if ($date['hours'] < '16') {
+             // date à J+1
+             $datetova = date("Y-m-d", strtotime($_SESSION["glpi_currenttime"])
+                         +1*DAY_TIMESTAMP);
+          } else {
+             // date à J+2
+             $datetova = date("Y-m-d", strtotime($_SESSION["glpi_currenttime"])
+                         +2*DAY_TIMESTAMP);
+          }
+          $input['date_tova'] = $datetova;
+       }
       return  $input;
    }
 

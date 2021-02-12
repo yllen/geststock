@@ -20,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2020 GestStock plugin team
+ @copyright Copyright (c) 2017-2021 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -84,7 +84,7 @@ function plugin_init_geststock() {
 function plugin_version_geststock() {
 
    return ['name'           => __('Stock gestion', 'geststock'),
-           'version'        => '1.3.0',
+           'version'        => '1.3.1',
            'author'         => 'Nelly Mahu-Lasson',
            'license'        => 'GPLv3+',
            'homepage'       => '',

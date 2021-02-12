@@ -20,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2020 GestStock plugin team
+ @copyright Copyright (c) 2017-2021 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -56,12 +56,12 @@ class PluginGeststockTicket {
 
             // no transfert if count items selected <> items reserved
             $resaid = $resa['id'];
-            if ($resaitem->getFromDBByQuery("WHERE `plugin_geststock_reservations_id` = $resaid")) {
+            if ($resaitem->getFromDBByCrit(['plugin_geststock_reservations_id' => $resaid])) {
                foreach ($DB->request("glpi_plugin_geststock_reservations_items",
                                      ['plugin_geststock_reservations_id' => $resa['id']]) as $resait) {
                   $resaitid = $resait['id'];
                   $count    = $resait['nbrereserv'];
-                  if ($nbre->getFromDBByQuery("WHERE `plugin_geststock_reservations_items_id` = $resaitid")) {
+                  if ($nbre->getFromDBByCrit(['plugin_geststock_reservations_items_id' => $resaitid])) {
                      $num  = importArrayFromDB($nbre->fields['otherserial']);
                      if ($count <> count($num)) {
                         Session::addMessageAfterRedirect(__('Number selected different from number reserved',
