@@ -56,12 +56,12 @@ class PluginGeststockTicket {
 
             // no transfert if count items selected <> items reserved
             $resaid = $resa['id'];
-            if ($resaitem->getFromDBByQuery("WHERE `plugin_geststock_reservations_id` = $resaid")) {
+            if ($resaitem->ggetFromDBByCrit(['plugin_geststock_reservations_id' => $resaid])) {
                foreach ($DB->request("glpi_plugin_geststock_reservations_items",
                                      ['plugin_geststock_reservations_id' => $resa['id']]) as $resait) {
                   $resaitid = $resait['id'];
                   $count    = $resait['nbrereserv'];
-                  if ($nbre->getFromDBByQuery("WHERE `plugin_geststock_reservations_items_id` = $resaitid")) {
+                  if ($nbre->getFromDBByCrit(['plugin_geststock_reservations_items_id' => $resaitid])) {
                      $num  = importArrayFromDB($nbre->fields['otherserial']);
                      if ($count <> count($num)) {
                         Session::addMessageAfterRedirect(__('Number selected different from number reserved',
