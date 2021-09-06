@@ -223,6 +223,22 @@ class PluginGeststockReservation extends CommonDBTM {
          $input['date_whished'] = $datewhished;
        }
 
+       if ((PluginGeststockConfig::TOVA == 1)
+             && (!isset($input['date_tova']) || ($input['date_tova'] == ''))) {
+          $date  = getdate();
+          $hours = $date['hours'];
+          if ($date['hours'] < '16') {
+             // date à J+1
+             $datetova = date("Y-m-d", strtotime($_SESSION["glpi_currenttime"])
+                   +1*DAY_TIMESTAMP);
+          } else {
+             // date à J+2
+             $datetova = date("Y-m-d", strtotime($_SESSION["glpi_currenttime"])
+                   +2*DAY_TIMESTAMP);
+          }
+          $input['date_tova'] = $datetova;
+       }
+
       return  $input;
    }
 
