@@ -20,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2018 GestStock plugin team
+ @copyright Copyright (c) 2017-2021 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -31,29 +31,29 @@
 function plugin_geststock_install() {
    global $DB;
 
-   $migration = new Migration(120);
+   $migration = new Migration(140);
 
-   include_once(GLPI_ROOT."/plugins/geststock/inc/gestion.class.php");
+   include_once(Plugin::getPhpDir('geststock')."/inc/gestion.class.php");
 
-   include_once(GLPI_ROOT."/plugins/geststock/inc/config.class.php");
+   include_once(Plugin::getPhpDir('geststock')."/inc/config.class.php");
    PluginGeststockConfig::install($migration);
 
-   include_once(GLPI_ROOT."/plugins/geststock/inc/followup.class.php");
+   include_once(Plugin::getPhpDir('geststock')."/inc/followup.class.php");
    PluginGeststockFollowup::install($migration);
 
-   include_once(GLPI_ROOT."/plugins/geststock/inc/reservation.class.php");
+   include_once(Plugin::getPhpDir('geststock')."/inc/reservation.class.php");
    PluginGeststockReservation::install($migration);
 
-   include_once(GLPI_ROOT."/plugins/geststock/inc/reservation_item.class.php");
+   include_once(Plugin::getPhpDir('geststock')."/inc/reservation_item.class.php");
    PluginGeststockReservation_Item::install($migration);
 
-   include_once(GLPI_ROOT."/plugins/geststock/inc/profile.class.php");
+   include_once(Plugin::getPhpDir('geststock')."/inc/profile.class.php");
    PluginGeststockProfile::install($migration);
 
-   include_once(GLPI_ROOT."/plugins/geststock/inc/specification.class.php");
+   include_once(Plugin::getPhpDir('geststock')."/inc/specification.class.php");
    PluginGeststockSpecification::install($migration);
 
-   include_once(GLPI_ROOT."/plugins/geststock/inc/reservation_item_number.class.php");
+   include_once(Plugin::getPhpDir('geststock')."/inc/reservation_item_number.class.php");
    PluginGeststockReservation_Item_Number::install($migration);
 
 
@@ -79,25 +79,25 @@ function plugin_geststock_uninstall() {
       $DB->query("DROP TABLE `$table`");
    }
 
-   include_once(GLPI_ROOT."/plugins/geststock/inc/config.class.php");
+   include_once(Plugin::getPhpDir('geststock')."/inc/config.class.php");
    PluginGeststockConfig::uninstall();
 
-   include_once(GLPI_ROOT."/plugins/geststock/inc/followup.class.php");
+   include_once(Plugin::getPhpDir('geststock')."/inc/followup.class.php");
    PluginGeststockFollowup::uninstall();
 
-   include_once(GLPI_ROOT."/plugins/geststock/inc/reservation.class.php");
+   include_once(Plugin::getPhpDir('geststock')."/inc/reservation.class.php");
    PluginGeststockReservation::uninstall();
 
-   include_once(GLPI_ROOT."/plugins/geststock/inc/reservation_item.class.php");
+   include_once(Plugin::getPhpDir('geststock')."/inc/reservation_item.class.php");
    PluginGeststockReservation_Item::uninstall();
 
-   include_once(GLPI_ROOT."/plugins/geststock/inc/profile.class.php");
+   include_once(Plugin::getPhpDir('geststock')."/inc/profile.class.php");
    PluginGeststockProfile::uninstall();
 
-   include_once(GLPI_ROOT."/plugins/geststock/inc/specification.class.php");
+   include_once(Plugin::getPhpDir('geststock')."/inc/specification.class.php");
    PluginGeststockSpecification::uninstall();
 
-   include_once(GLPI_ROOT."/plugins/geststock/inc/menu.class.php");
+   include_once(Plugin::getPhpDir('geststock')."/inc/menu.class.php");
    PluginGeststockMenu::removeRightsFromSession();
 
    if (is_dir(GLPI_PLUGIN_DOC_DIR.'/geststock')) {
@@ -107,7 +107,7 @@ function plugin_geststock_uninstall() {
    $itemtypes = ['DisplayPreference', 'Bookmark', 'Log', 'Notepad'];
    foreach ($itemtypes as $itemtype) {
       $item = new $itemtype;
-      $item->deleteByCriteria(array('itemtype' => 'PluginGeststockReservation'));
+      $item->deleteByCriteria(['itemtype' => 'PluginGeststockReservation']);
    }
 
    return true;
@@ -126,10 +126,11 @@ function plugin_geststock_giveItem($type, $ID, $data, $num) {
    switch ($table.'.'.$field) {
       case "glpi_plugin_geststock_reservations_items.models_id" :
          $resa_id       = $data['id'];
-         $query_device = ['SELECT DISTINCT' => 'itemtype',
-                          'FROM'            => 'glpi_plugin_geststock_reservations_items',
-                          'WHERE'           => ['plugin_geststock_reservations_id' => $resa_id],
-                          'ORDER'           => 'itemtype'];
+         $query_device = ['SELECT'    => 'itemtype',
+                          'DISTINCT'  => true,
+                          'FROM'      => 'glpi_plugin_geststock_reservations_items',
+                          'WHERE'     => ['plugin_geststock_reservations_id' => $resa_id],
+                          'ORDER'     => 'itemtype'];
          $result_device = $DB->request($query_device);
          $number_device = count($result_device);
          $out           = '';
@@ -148,19 +149,20 @@ function plugin_geststock_giveItem($type, $ID, $data, $num) {
                  $table = 'glpi_plugin_simcard_simcardtypes';
                }
                if (!empty($table)) {
-                  $query = "SELECT `".$table."`.`$column`, `nbrereserv`
-                            FROM `glpi_plugin_geststock_reservations_items`, `".$table."`
-                            WHERE `".$table."`.`id`
-                                       = `glpi_plugin_geststock_reservations_items`.`models_id`
-                                  AND `glpi_plugin_geststock_reservations_items`.`itemtype`
-                                       = '".$type."'
-                                  AND `glpi_plugin_geststock_reservations_items`.`plugin_geststock_reservations_id`
-                                       = '".$resa_id."'
-                            ORDER BY `$table`.`$column`";
-
-                  if ($result_linked = $DB->query($query)) {
-                     if ($DB->numrows($result_linked)) {
-                        while ($data = $DB->fetch_assoc($result_linked)) {
+                  $colname = $table.".".$column;
+                  $query = ['FIELDS'    => [$colname, 'nbrereserv'],
+                            'FROM'      => 'glpi_plugin_geststock_reservations_items',
+                            'LEFT JOIN' => [$table => ['FKEY' => [$table => 'id',
+                                                                 'glpi_plugin_geststock_reservations_items'
+                                                                        => 'models_id']]],
+                            'WHERE'     => ['glpi_plugin_geststock_reservations_items.itemtype'
+                                                => $type,
+                                            'glpi_plugin_geststock_reservations_items.plugin_geststock_reservations_id'
+                                                => $resa_id],
+                            'ORDER'     => $colname];
+                  if ($result_linked = $DB->request($query)) {
+                     if (count($result_linked)) {
+                        while ($data = $result_linked->next()) {
                            $out .= $data['nbrereserv']. " ".$item->getTypeName($data['nbrereserv'])." - ".$data['name']."<br>";
 
                         }
@@ -216,7 +218,7 @@ function plugin_geststock_postinit() {
 }
 
 
-function plugin_geststock_getAddSearchOptions($itemtype) {
+function plugin_geststock_getAddSearchOptionsNew($itemtype) {
    global $CFG_GLPI;
 
    $tab = [];
@@ -228,7 +230,7 @@ function plugin_geststock_getAddSearchOptions($itemtype) {
                  'name'       =>  __('Length', 'geststock'),
                  'datatype'   =>  'number',
                  'joinparams' => ['jointype'  => 'child',
-                                  'condition' => "AND NEWTABLE.`itemtype` = '". $obj."'",
+                                  'condition' => [NEWTABLE.'.itemtype' => $obj],
                                   'linkfield' => 'models_id']];
 
        $tab[] = ['id'         => '4',

@@ -20,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2018 GestStock plugin team
+ @copyright Copyright (c) 2017-2021 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -45,8 +45,7 @@ function plugin_init_geststock() {
    if ($plugin->isActivated("geststock")) {
       $PLUGIN_HOOKS['config_page']['geststock'] = 'front/config.form.php';
    }
-
-   include_once(GLPI_ROOT."/plugins/geststock/inc/reservation.class.php");
+   include_once(Plugin::getPhpDir('geststock')."/inc/reservation.class.php");
 
    if ($plugin->isActivated("simcard")) {
       PluginGeststockReservation::registerType('PluginSimcardSimcard');
@@ -81,24 +80,14 @@ function plugin_init_geststock() {
 function plugin_version_geststock() {
 
    return ['name'           => __('Stock gestion', 'geststock'),
-           'version'        => '1.2.0',
+           'version'        => '2.1.0',
            'author'         => 'Nelly Mahu-Lasson',
            'license'        => 'GPLv3+',
            'homepage'       => '',
            'page'           => "/front/reservation.php",
-           'minGlpiVersion' => '9.3',
-           'requirements'   => ['glpi' => ['min' => '9.3',
-                                           'max' => '9.4']]];
-}
-
-
-function plugin_geststock_check_prerequisites() {
-
-   if (version_compare(GLPI_VERSION,'9.3','lt') || version_compare(GLPI_VERSION,'9.4','ge')) {
-      echo "This plugin requires GLPI >= 9.3 and GLPI < 9.4";
-      return false;
-   }
-   return true;
+           'minGlpiVersion' => '9.5.3',
+           'requirements'   => ['glpi' => ['min' => '9.5.3',
+                                           'max' => '9.6']]];
 }
 
 

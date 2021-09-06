@@ -20,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2018 GestStock plugin team
+ @copyright Copyright (c) 2017-2021 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -179,10 +179,11 @@ class PluginGeststockReservation_Item extends CommonDBChild {
       $canedit   = Session::haveRight(self::$rightname, CREATE);
       $canupdate = Session::haveRight(self::$rightname, UPDATE);
 
-      $query = ['SELECT DISTINCT' => 'itemtype',
-               'FROM'            => 'glpi_plugin_geststock_reservations_items',
-               'WHERE'           => ['plugin_geststock_reservations_id' => $instID],
-               'ORDER'           => 'itemtype'];
+      $query = ['SELECT'    => 'itemtype',
+                'DISTINCT'  => true,
+                'FROM'      => 'glpi_plugin_geststock_reservations_items',
+                'WHERE'     => ['plugin_geststock_reservations_id' => $instID],
+                'ORDER'     => 'itemtype'];
       $result = $DB->request($query);
       $number = count($result);
 
@@ -331,21 +332,22 @@ class PluginGeststockReservation_Item extends CommonDBChild {
          if ($item->getType() == "PluginSimcardSimcard") {
             $tabl = 'glpi_plugin_simcard_simcardtypes';
          }
-         $query = "SELECT `$tabl`.*,
-                          `glpi_plugin_geststock_reservations_items`.`id` AS IDD,
-                          `glpi_plugin_geststock_reservations_items`.`nbrereserv`,
-                          `glpi_plugin_geststock_reservations_items`.`locations_id_stock`,
-                          `glpi_plugin_geststock_reservations_items`.`models_id`
-                   FROM `glpi_plugin_geststock_reservations_items`, `$tabl`
-                   WHERE `$tabl`.`id`
-                                 = `glpi_plugin_geststock_reservations_items`.`models_id`
-                         AND `glpi_plugin_geststock_reservations_items`.`itemtype` = '".$type."'
-                         AND `glpi_plugin_geststock_reservations_items`.`plugin_geststock_reservations_id`
-                                 = '".$instID."'
-                   ORDER BY `$tabl`.`id`";
+
+         $query = ['FIELDS'    => [$tabl.'.*', 'glpi_plugin_geststock_reservations_items.id AS IDD',
+                                   'glpi_plugin_geststock_reservations_items.nbrereserv',
+                                   'glpi_plugin_geststock_reservations_items.locations_id_stock',
+                                   'glpi_plugin_geststock_reservations_items.models_id'],
+                   'FROM'      => 'glpi_plugin_geststock_reservations_items',
+                   'LEFT JOIN' => [$tabl => ['FKEY' => [$tabl => 'id',
+                                                        'glpi_plugin_geststock_reservations_items'
+                                                              => 'models_id']]],
+                   'WHERE'     => ['glpi_plugin_geststock_reservations_items.itemtype' => $type,
+                                   'glpi_plugin_geststock_reservations_items.plugin_geststock_reservations_id'
+                                                                                       => $instID],
+                   'ORDER'     => $tabl.'.id'];
 
          if ($result_linked = $DB->request($query)) {
-            if (counts($result_linked)) {
+            if (count($result_linked)) {
                Session::initNavigateListItems($type,
                                              _n('Stock reservation', 'Stock reservations', 2,
                                                 'geststock')." = ".$resa->getNameID());
@@ -371,9 +373,10 @@ class PluginGeststockReservation_Item extends CommonDBChild {
                   echo "<td class='center'>".$data['name']."</td>";
                   echo "<td class='center'>".$data['nbrereserv']."</td>";
                   $fup = new PluginGeststockFollowup();
-                  foreach ($DB->request("SELECT MAX(`id`)
-                                         FROM `glpi_plugin_geststock_followups`
-                                         WHERE `plugin_geststock_reservations_items_id` = ".$data['IDD']) as $val) {
+                  foreach ($DB->request(['SELECT' => ['MAX' => 'id'],
+                                         'FROM'   => 'glpi_plugin_geststock_followups',
+                                         'WHERE'  => ['plugin_geststock_reservations_items_id' => $data["IDD"]]])
+                                       as $val) {
                     $fup->getFromDB($val['MAX(`id`)']);
                     echo "<td class='center'>";
                     echo Dropdown::getDropdownName('glpi_locations',
@@ -865,10 +868,11 @@ class PluginGeststockReservation_Item extends CommonDBChild {
       $pdf->setColumnsSize(100);
       $pdf->displayTitle('<b>'._n('Associated item', 'Associated items',2).'</b>');
 
-      $query = ['SELECT DISTINCT' => 'itemtype',
-                'FROM'            => 'glpi_plugin_geststock_reservations_items',
-                'WHERE'           => ['plugin_geststock_reservations_id' => $instID],
-                'ORDER'           => 'itemtype'];
+      $query = ['SELECT'    => 'itemtype',
+                'DISTINCT'  => true,
+                'FROM'      => 'glpi_plugin_geststock_reservations_items',
+                'WHERE'     => ['plugin_geststock_reservations_id' => $instID],
+                'ORDER'     => 'itemtype'];
       $result = $DB->request($query);
       $number = count($result);
 
@@ -896,18 +900,21 @@ class PluginGeststockReservation_Item extends CommonDBChild {
             }
 
             $tabl = strtolower($item->getType());
-            $query = "SELECT `glpi_".$tabl."models`.*,
-                             `glpi_plugin_geststock_reservations_items`.`id` AS IDD,
-                             `glpi_plugin_geststock_reservations_items`.`nbrereserv`,
-                             `glpi_plugin_geststock_reservations_items`.`locations_id_stock`,
-                             `glpi_plugin_geststock_reservations_items`.`models_id`
-                         FROM  `glpi_plugin_geststock_reservations_items`, `glpi_".$tabl."models`
-                         WHERE  `glpi_".$tabl."models`.`id`
-                                    = `glpi_plugin_geststock_reservations_items`.`models_id`
-                               AND `glpi_plugin_geststock_reservations_items`.`itemtype` = '".$type."'
-                               AND `glpi_plugin_geststock_reservations_items`.`plugin_geststock_reservations_id`
-                                    = '".$instID."'
-                         ORDER BY `glpi_".$tabl."models`.`id`";
+
+            $tabmod    = 'glpi_'.$tabl.'models';
+            $query = ['SELECT'     => [$tabmod.'.*',
+                                       'glpi_plugin_geststock_reservations_items.id AS IDD',
+                                       'glpi_plugin_geststock_reservations_items.nbrereserv',
+                                       'glpi_plugin_geststock_reservations_items.locations_id_stock',
+                                       'glpi_plugin_geststock_reservations_items.models_id'],
+                       'FROM'      =>  'glpi_plugin_geststock_reservations_items',
+                       'LEFT JOIN' => [$tabmod => ['FKEY' => [$tabmod => 'id',
+                                                              'glpi_plugin_geststock_reservations_items'
+                                                                      => 'models_id']]],
+                       'WHERE'     => ['glpi_plugin_geststock_reservations_items.itemtype' => $type,
+                                       'glpi_plugin_geststock_reservations_items.plugin_geststock_reservations_id'
+                                                                                           => $instID],
+                        'ORDER'    => $tabmod.'.id'];
 
             $dbu = new DbUtils();
             if ($result_linked = $DB->request($query)) {
@@ -920,10 +927,10 @@ class PluginGeststockReservation_Item extends CommonDBChild {
                      }
 
                      $fup = new PluginGeststockFollowup();
-                     foreach ($DB->request("SELECT MAX(`id`)
-                                            FROM `glpi_plugin_geststock_followups`
-                                            WHERE `plugin_geststock_reservations_items_id`
-                                                      = ".$data['IDD']) as $val) {
+                     foreach ($DB->request(['SELECT' => ['MAX' => 'id'],
+                                            'FROM'   => 'glpi_plugin_geststock_followups',
+                                            'WHERE'  => ['plugin_geststock_reservations_items_id'
+                                                         => $data["IDD"]]]) as $val) {
                         $fup->getFromDB($val['MAX(`id`)']);
                         $newlocation = $fup->fields['locations_id_new'];
                      }
