@@ -41,6 +41,9 @@ function plugin_init_geststock() {
 
    Plugin::registerClass('PluginGeststockProfile', ['addtabon' => 'Profile']);
 
+   $PLUGIN_HOOKS['pre_item_update']['geststock'] = ['Ticket' => ['PluginGeststockTicket', 'beforeUpdate']];
+   $PLUGIN_HOOKS['item_update']['geststock']     = ['Ticket' => ['PluginGeststockTicket', 'afterUpdate']];
+
    $plugin = new Plugin();
    if ($plugin->isActivated("geststock")) {
       $PLUGIN_HOOKS['config_page']['geststock'] = 'front/config.form.php';
@@ -59,7 +62,8 @@ function plugin_init_geststock() {
 
    $PLUGIN_HOOKS['change_profile']['geststock']   = ['PluginGeststockProfile','initProfile'];
 
-   $PLUGIN_HOOKS['item_update']['geststock'] = ['Ticket' => ['PluginGeststockTicket', 'afterUpdate']];
+   $PLUGIN_HOOKS['pre_item_update']['geststock'] = ['Ticket' => ['PluginGeststockTicket', 'beforeUpdate']];
+   $PLUGIN_HOOKS['item_update']['geststock']     = ['Ticket' => ['PluginGeststockTicket', 'afterUpdate']];
 
 
    if (Session::getLoginUserID()) {
