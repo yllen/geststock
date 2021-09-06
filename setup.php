@@ -62,10 +62,6 @@ function plugin_init_geststock() {
 
    $PLUGIN_HOOKS['change_profile']['geststock']   = ['PluginGeststockProfile','initProfile'];
 
-   $PLUGIN_HOOKS['pre_item_update']['geststock'] = ['Ticket' => ['PluginGeststockTicket', 'beforeUpdate']];
-   $PLUGIN_HOOKS['item_update']['geststock']     = ['Ticket' => ['PluginGeststockTicket', 'afterUpdate']];
-
-
    if (Session::getLoginUserID()) {
       if (Session::haveRight("plugin_geststock", READ)) {
          $PLUGIN_HOOKS['menu_toadd']['geststock'] = ['tools' => 'PluginGeststockMenu'];
