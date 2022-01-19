@@ -97,6 +97,9 @@ function plugin_geststock_uninstall() {
    include_once(GLPI_ROOT."/plugins/geststock/inc/specification.class.php");
    PluginGeststockSpecification::uninstall();
 
+   include_once(GLPI_ROOT."/plugins/geststock/inc/reservation_item_number.class.php");
+   PluginGeststockReservation_Item_Number::uninstall();
+
    include_once(GLPI_ROOT."/plugins/geststock/inc/menu.class.php");
    PluginGeststockMenu::removeRightsFromSession();
 
@@ -104,7 +107,7 @@ function plugin_geststock_uninstall() {
       Toolbox::deleteDir(GLPI_PLUGIN_DOC_DIR.'/geststock');
    }
 
-   $itemtypes = ['DisplayPreference', 'Bookmark', 'Log', 'Notepad'];
+   $itemtypes = ['DisplayPreference', 'SavedSearch', 'Log', 'Notepad'];
    foreach ($itemtypes as $itemtype) {
       $item = new $itemtype;
       $item->deleteByCriteria(['itemtype' => 'PluginGeststockReservation']);
