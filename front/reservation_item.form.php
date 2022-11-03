@@ -20,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2021 GestStock plugin team
+ @copyright Copyright (c) 2017-2022 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -87,18 +87,19 @@ if (isset($_POST["upload"])) {
                                       [$field        => $value,
                                        'entities_id' => $config->fields['entities_id_stock'],
                                        $itemsid      => $ri->fields['models_id']]);
-                  if ($data = $req->next()) {
-                     toolbox::logdebug("data ", $data);
+                  $find = false;
+                  foreach ($req as $data) {
+                     $find = true;
                      // stock id of item
                       if ($item->getFromDB($data['id'])
                           && ($item->getField('states_id') == $config->fields['stock_status'])) {
                          $tabid[] = $data['id'];
-                         toolbox::logdebug("tabid", $tabid);
                       } else {
                          Session::addMessageAfterRedirect(__('The item with this number is not free',
                                                              'geststock'), false, ERROR);
                       }
-                  } else {
+                  }
+                  if ($find == false) {
                      Session::addMessageAfterRedirect(sprintf(__('Item not found with this %s number',
                                                                  'geststock'), $field." ".$value),
                                                       false, ERROR);

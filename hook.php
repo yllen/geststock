@@ -20,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2021 GestStock plugin team
+ @copyright Copyright (c) 2017-2022 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -138,9 +138,8 @@ function plugin_geststock_giveItem($type, $ID, $data, $num) {
          $number_device = count($result_device);
          $out           = '';
          if ($number_device > 0) {
-            for ($y=0 ; $y < $number_device ; $y++) {
+            foreach ($result_device as $row) {
                $column = "name";
-               $row    = $result_device->next();
                $type   = $row['itemtype'];
                if (!($item = $dbu->getItemForItemtype($type))) {
                   continue;
@@ -165,7 +164,7 @@ function plugin_geststock_giveItem($type, $ID, $data, $num) {
                             'ORDER'     => $colname];
                   if ($result_linked = $DB->request($query)) {
                      if (count($result_linked)) {
-                        while ($data = $result_linked->next()) {
+                        foreach ($result_linked as $data) {
                            $out .= $data['nbrereserv']. " ".$item->getTypeName($data['nbrereserv'])." - ".$data['name']."<br>";
 
                         }

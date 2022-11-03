@@ -20,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2021 GestStock plugin team
+ @copyright Copyright (c) 2017-2022 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -83,7 +83,7 @@ class PluginGeststockFollowup extends CommonDBTM {
                                 'addicon'  => false,
                                 'comments' => false]);
             echo "<br><br>\n";
-            echo Html::submit(_x('button', 'Move'), ['name' => 'massiveaction'])."</span>";
+            echo Html::submit(_sx('button', 'Move'), ['name' => 'massiveaction'])."</span>";
             return true;
       }
       return parent::showMassiveActionsSubForm($ma);
