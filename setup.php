@@ -80,10 +80,10 @@ function plugin_init_geststock() {
 function plugin_version_geststock() {
 
    return ['name'           => __('Stock gestion', 'geststock'),
-           'version'        => '2.1.0',
+           'version'        => '2.0.0',
            'author'         => 'Nelly Mahu-Lasson',
            'license'        => 'GPLv3+',
-           'homepage'       => '',
+           'homepage'       => 'https://github.com/yllen/geststock',
            'page'           => "/front/reservation.php",
            'minGlpiVersion' => '9.5.3',
            'requirements'   => ['glpi' => ['min' => '9.5.3',
