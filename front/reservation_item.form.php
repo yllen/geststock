@@ -107,7 +107,6 @@ if (isset($_POST["upload"])) {
             }
             fclose($fic);
             // controle item dans fichier et item réservés
-            toolbox::logdebug("nbre reserve ", $ri->fields['nbrereserv'], "nbre ok dans fichier", count($tabid));
             if (count($tabid) == $ri->fields['nbrereserv']) {
                // ajout dans table des numeros
                $input = ['plugin_geststock_reservations_items_id' => $ri->fields['id'],
