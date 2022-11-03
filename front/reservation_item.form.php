@@ -73,41 +73,41 @@ if (isset($_POST["upload"])) {
             $itemsid = strtolower($ri->fields['itemtype'])."models_id";
 
             while ($itemfic = fgetcsv($fic, 1024, ';')) {
-               for ($i=0 ; $i < count($itemfic) ; $i++) {
-                  $value   = $field   = '';
-                 // controle numéro inventaire existant dans item
-                  if (!empty($itemfic[0])) {
-                     $field = 'otherserial';
-                     $value = $itemfic[0];
-                  } else if (!empty($itemfic[1])) {
-                     $field = 'serial';
-                     $value = $itemfic[1];
-                  }
-                  if (!empty($value)) {
-                     $req = $DB->request($table,
-                                         [$field        => $value,
-                                          'entities_id' => $config->fields['entities_id_stock'],
-                                          $itemsid      => $ri->fields['models_id']]);
-                     if ($data = $req->next()) {
-                        // stock id of item
-                         if ($item->getFromDB($data['id'])
-                               && ($item->getField('states_id') == $config->fields['stock_status'])) {
-                            $tabid[] = $data['id'];
-                         } else {
-                            Session::addMessageAfterRedirect(__('The item with this number is not free',
-                                                                'geststock'),
-                                                             false, ERROR);
-                         }
-                     } else {
-                        Session::addMessageAfterRedirect(sprintf(__('Item not found with this %s number',
-                                                                    'geststock'), $field),
-                                                         false, ERROR);
-                     }
+               $value   = $field   = '';
+               // controle numéro inventaire existant dans item
+               if (!empty($itemfic[0])) {
+                  $field = 'otherserial';
+                  $value = $itemfic[0];
+               } else if (!empty($itemfic[1])) {
+                  $field = 'serial';
+                  $value = $itemfic[1];
+               }
+               if (!empty($value)) {
+                  $req = $DB->request($table,
+                                      [$field        => $value,
+                                       'entities_id' => $config->fields['entities_id_stock'],
+                                       $itemsid      => $ri->fields['models_id']]);
+                  if ($data = $req->next()) {
+                     toolbox::logdebug("data ", $data);
+                     // stock id of item
+                      if ($item->getFromDB($data['id'])
+                          && ($item->getField('states_id') == $config->fields['stock_status'])) {
+                         $tabid[] = $data['id'];
+                         toolbox::logdebug("tabid", $tabid);
+                      } else {
+                         Session::addMessageAfterRedirect(__('The item with this number is not free',
+                                                             'geststock'), false, ERROR);
+                      }
+                  } else {
+                     Session::addMessageAfterRedirect(sprintf(__('Item not found with this %s number',
+                                                                 'geststock'), $field." ".$value),
+                                                      false, ERROR);
                   }
                }
             }
             fclose($fic);
             // controle item dans fichier et item réservés
+            toolbox::logdebug("nbre reserve ", $ri->fields['nbrereserv'], "nbre ok dans fichier", count($tabid));
             if (count($tabid) == $ri->fields['nbrereserv']) {
                // ajout dans table des numeros
                $input = ['plugin_geststock_reservations_items_id' => $ri->fields['id'],
