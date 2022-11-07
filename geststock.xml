@@ -25,6 +25,11 @@
     </authors>
     <versions>
         <version>
+          <num>2.0.0.0</num>
+          <compatibility>9.5.3</compatibility>
+          <download_url>https://github.com/yllen/geststock/releases/download/v2.0.0/glpi-geststock-2.0.0.tar.gz</download_url>
+      </version>
+      <version>
             <num>1.3.0</num>
             <compatibility>9.4.x</compatibility>
         </version>
