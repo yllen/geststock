@@ -425,14 +425,14 @@ class PluginGeststockReservation extends CommonDBTM {
                      `status` int(11) NOT NULL DEFAULT '1',
                      `comment` text COLLATE utf8_unicode_ci,
                      `is_deleted` tinyint(1) NOT NULL default '0',
-                     `date_reserv` DATE COLLATE utf8_unicode_ci NULL,
-                     `date_whished` DATE COLLATE utf8_unicode_ci NULL,
-                     `receipt_date` DATE COLLATE utf8_unicode_ci NULL,
-                     `date_tova` DATE COLLATE utf8_unicode_ci NULL,
+                     `date_reserv` timestamp NULL DEFAULT NULL,
+                     `date_whished` timestamp NULL DEFAULT NULL,
+                     `receipt_date` timestamp NULL DEFAULT NULL,
+                     `date_tova` timestamp NULL DEFAULT NULL,
                      `number_tova` varchar(255) NULL,
                      `type_tova` int(11) NULL,
                      `number_package` int(11) NULL,
-                     `date_mod` datetime DEFAULT NULL,
+                     `date_mod` timestamp NULL DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE `unicity` (`entities_id_deliv`, `tickets_id`),
                     KEY `users_id` (`users_id`),
@@ -443,6 +443,13 @@ class PluginGeststockReservation extends CommonDBTM {
 
          $DB->queryOrDie($query, 'Error in creating glpi_plugin_geststock_reservations'.
                          "<br>".$DB->error());
+      } else {
+         // migration to 2.1.0
+         $mig->changeField($table, 'date_reserv', 'date_reserv', "timestamp NULL DEFAULT NULL");
+         $mig->changeField($table, 'date_whished', 'date_whished', "timestamp NULL DEFAULT NULL");
+         $mig->changeField($table, 'receipt_date', 'receipt_date', "timestamp NULL DEFAULT NULL");
+         $mig->changeField($table, 'date_tova', 'date_tova', "timestamp NULL DEFAULT NULL");
+         $mig->changeField($table, 'date_mod', 'date_mod', "timestamp NULL DEFAULT NULL");
       }
    }
 

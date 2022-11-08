@@ -51,8 +51,8 @@ if (isset($_POST["add"])) {
    if (isset($_GET['tickets_id'])) {
       $_POST['tickets_id'] = $_GET['tickets_id'];
    }
-   $newID = $PluginReservation->add($_POST);
-   if ($newID) {
+   if ($newID = $PluginReservation->add($_POST)) {
+
       Event::log($newID, "geststock", 4, "tools",
                  sprintf(__('%1$s adds the item %2$s'), $_SESSION["glpiname"], $newID));
    }

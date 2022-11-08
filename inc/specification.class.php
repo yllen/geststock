@@ -143,13 +143,16 @@ class PluginGeststockSpecification extends CommonDBTM {
                      `height` int(11) NULL,
                      `weight` decimal(6,3) NOT NULL DEFAULT '000.000',
                      `volume` float NULL,
-                     `date_mod` datetime DEFAULT NULL,
+                     `date_mod` timestamp NULL DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE `unicity` (`models_id`, `itemtype`)
                   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
           $DB->queryOrDie($query, 'Error in creating glpi_plugin_geststock_specifications'.
                            "<br>".$DB->error());
+      } else {
+         // migration to 2.1.0
+         $mig->changeField($table, 'date_mod', 'date_mod', "timestamp NULL DEFAULT NULL");
       }
     }
 

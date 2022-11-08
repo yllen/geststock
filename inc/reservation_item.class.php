@@ -582,7 +582,7 @@ class PluginGeststockReservation_Item extends CommonDBChild {
          echo "<tr class='tab_bg_1'><td></td><td colspan='2' class='center'>";
          echo Html::submit(_sx('button', 'Update'), ['name'  => 'addotherserial',
                                                      'class' => 'btn btn-primary']);
-         echo "</td><td>">
+         echo "</td><td>";
          echo Html::submit(__('Upload files', 'geststock'), ['name'  => 'upload',
                                                              'class' => 'btn btn-primary']);
          echo Html::hidden('reservations_id', ['value' => $instID]);

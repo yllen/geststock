@@ -31,7 +31,7 @@
 function plugin_geststock_install() {
    global $DB;
 
-   $migration = new Migration(140);
+   $migration = new Migration(210);
 
    include_once(Plugin::getPhpDir('geststock')."/inc/gestion.class.php");
 
@@ -63,6 +63,8 @@ function plugin_geststock_install() {
    if (!is_dir(PLUGIN_GESTSTOCK_UPLOAD_DIR)) {
       mkdir(PLUGIN_GESTSTOCK_UPLOAD_DIR);
    }
+
+   $migration->executeMigration();
 
    return true;
 }
@@ -112,6 +114,8 @@ function plugin_geststock_uninstall() {
       $item = new $itemtype;
       $item->deleteByCriteria(['itemtype' => 'PluginGeststockReservation']);
    }
+
+   $migration->executeMigration();
 
    return true;
 }
