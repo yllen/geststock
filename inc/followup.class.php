@@ -43,7 +43,7 @@ class PluginGeststockFollowup extends CommonDBTM {
                      `locations_id_old` int(11) NULL,
                      `locations_id_new` int(11) NULL,
                      `users_id` int(11) NULL,
-                     `date_mod` datetime default NULL,
+                     `date_mod` timestamp NULL DEFAULT NULL,
                      PRIMARY KEY (`id`),
                      KEY `plugin_geststock_reservations_id` (`plugin_geststock_reservations_id`),
                      KEY `plugin_geststock_reservations_items_id` (`plugin_geststock_reservations_items_id`),

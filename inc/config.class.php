@@ -50,7 +50,7 @@ class PluginGeststockConfig extends CommonDBTM {
                      `entities_id_stock` int(11) NULL,
                      `stock_status` int(11) NULL,
                      `transit_status` int(11) NULL,
-                     `date_mod` datetime default NULL,
+                     `date_mod` timestamp NULL DEFAULT NULL,
                      `users_id` int(11) NULL,
                      `criterion` varchar(100) NOT NULL,
                      PRIMARY KEY  (`id`),
