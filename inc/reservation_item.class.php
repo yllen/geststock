@@ -289,7 +289,7 @@ class PluginGeststockReservation_Item extends CommonDBChild {
       }
 
       $i = $volume = $weight = $totvolume = $totweight = $j = 0;
-      echo "<div class='center'>";
+      echo "<div>";
       if ($canupdate && ($resa->fields['status'] < PluginGeststockReservation::RECEIPT)) {
          Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
          $massiveactionparams = ['container' => 'mass'.__CLASS__.$rand];
