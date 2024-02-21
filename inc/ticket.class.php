@@ -55,9 +55,10 @@ class PluginGeststockTicket {
                                ['tickets_id' => $ticket->input['id']]) as $resa) {
 
             // no transfert if count items selected <> items reserved
-            $resaid = $resa['id'];
+            $req = $DB->request("glpi_plugin_geststock_reservations_items",
+                                ['plugin_geststock_reservations_id' => $resa['id']]);
 
-            if ($resaitem->getFromDBByCrit(['plugin_geststock_reservations_id' => $resaid])) {
+            if ($req->count())) {
                foreach ($DB->request("glpi_plugin_geststock_reservations_items",
                                      ['plugin_geststock_reservations_id' => $resa['id']]) as $resait) {
                   $resaitid = $resait['id'];
