@@ -20,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2021 GestStock plugin team
+ @copyright Copyright (c) 2017-2022 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -43,7 +43,7 @@ class PluginGeststockFollowup extends CommonDBTM {
                      `locations_id_old` int(11) NULL,
                      `locations_id_new` int(11) NULL,
                      `users_id` int(11) NULL,
-                     `date_mod` datetime default NULL,
+                     `date_mod` timestamp NULL DEFAULT NULL,
                      PRIMARY KEY (`id`),
                      KEY `plugin_geststock_reservations_id` (`plugin_geststock_reservations_id`),
                      KEY `plugin_geststock_reservations_items_id` (`plugin_geststock_reservations_items_id`),
@@ -83,7 +83,7 @@ class PluginGeststockFollowup extends CommonDBTM {
                                 'addicon'  => false,
                                 'comments' => false]);
             echo "<br><br>\n";
-            echo Html::submit(_x('button', 'Move'), ['name' => 'massiveaction'])."</span>";
+            echo Html::submit(_sx('button', 'Move'), ['name' => 'massiveaction'])."</span>";
             return true;
       }
       return parent::showMassiveActionsSubForm($ma);

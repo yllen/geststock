@@ -20,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2021 GestStock plugin team
+ @copyright Copyright (c) 2017-2022 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -322,9 +322,9 @@ class PluginGeststockReservation extends CommonDBTM {
          echo "<tr class='tab_bg_1'>";
          echo "<td>".__('Ticket')."</td>";
          echo "<td colspan='3'>".Dropdown::getDropdownName('glpi_tickets', $ticket->fields['id']);
-         echo "<input type='hidden' name='entities_id_deliv' value='".$ticket->fields['entities_id']."'>";
-         echo "<input type='hidden' name='tickets_id' value='".$options['tickets_id']."'>";
-         echo "<input type='hidden' name='_fromticket' value=1>";
+         echo Html::hidden('entities_id_deliv', ['value' => $ticket->fields['entities_id']]);
+         echo Html::hidden('tickets_id', ['value' => $options['tickets_id']]);
+         echo Html::hidden('_fromticket', ['value' => 1]);
 
       } else {
          echo "<tr class='tab_bg_1'>";
@@ -365,8 +365,7 @@ class PluginGeststockReservation extends CommonDBTM {
                                            'maybeempty' => true]);
          echo "</td>";
          echo "<td>Numéro de valise</td><td>";
-         Html::autocompletionTextField($this,'number_tova',
-                                       ['value' => $this->fields["number_tova"]]);
+         echo Html::input('number_tova', ['value' => $this->fields["number_tova"]]);
          echo "</td></tr>";
 
          echo "<tr class='tab_bg_1'>";
@@ -388,10 +387,14 @@ class PluginGeststockReservation extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td rowspan='5'>".__('Comments')."</td>";
       echo "<td rowspan='5' class='middle' colspan='3'>";
-      echo "<textarea style='width:95%' rows='5' name='comment' >".$this->fields["comment"];
+      Html::textarea(['name'            => 'comment',
+                      'value'           => $this->fields["comment"],
+                      'enable_richtext' => false,
+                      'rows'            => '5',
+                      'style'           => 'width:95%']);
       echo "</textarea>";
       if (empty($this->fields['date_reserv'])) {
-         echo "<input type='hidden' name='date_reserv' value='".$_SESSION["glpi_currenttime"]."'>";
+         echo Html::hidden('date_reserv', ['value' => $_SESSION["glpi_currenttime"]]);
       }
       echo "</td></tr>\n";
 
@@ -422,14 +425,14 @@ class PluginGeststockReservation extends CommonDBTM {
                      `status` int(11) NOT NULL DEFAULT '1',
                      `comment` text COLLATE utf8_unicode_ci,
                      `is_deleted` tinyint(1) NOT NULL default '0',
-                     `date_reserv` DATE COLLATE utf8_unicode_ci NULL,
-                     `date_whished` DATE COLLATE utf8_unicode_ci NULL,
-                     `receipt_date` DATE COLLATE utf8_unicode_ci NULL,
-                     `date_tova` DATE COLLATE utf8_unicode_ci NULL,
+                     `date_reserv` timestamp NULL DEFAULT NULL,
+                     `date_whished` timestamp NULL DEFAULT NULL,
+                     `receipt_date` timestamp NULL DEFAULT NULL,
+                     `date_tova` timestamp NULL DEFAULT NULL,
                      `number_tova` varchar(255) NULL,
                      `type_tova` int(11) NULL,
                      `number_package` int(11) NULL,
-                     `date_mod` datetime DEFAULT NULL,
+                     `date_mod` timestamp NULL DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE `unicity` (`entities_id_deliv`, `tickets_id`),
                     KEY `users_id` (`users_id`),
@@ -440,6 +443,13 @@ class PluginGeststockReservation extends CommonDBTM {
 
          $DB->queryOrDie($query, 'Error in creating glpi_plugin_geststock_reservations'.
                          "<br>".$DB->error());
+      } else {
+         // migration to 2.1.0
+         $mig->changeField($table, 'date_reserv', 'date_reserv', "timestamp NULL DEFAULT NULL");
+         $mig->changeField($table, 'date_whished', 'date_whished', "timestamp NULL DEFAULT NULL");
+         $mig->changeField($table, 'receipt_date', 'receipt_date', "timestamp NULL DEFAULT NULL");
+         $mig->changeField($table, 'date_tova', 'date_tova', "timestamp NULL DEFAULT NULL");
+         $mig->changeField($table, 'date_mod', 'date_mod', "timestamp NULL DEFAULT NULL");
       }
    }
 
@@ -982,8 +992,8 @@ class PluginGeststockReservation extends CommonDBTM {
             echo "<th colspan='3'>".__('Add a reservation', 'geststock')."</th></tr>";
 
             echo "<tr class='tab_bg_2 center'><td>";
-            echo "<input type='hidden' name='tickets_id' value='$ID'>";
-            echo "<input type='hidden' name='entities_id' value='".$ticket->fields['entities_id']."'>";
+            echo Html::hidden('tickets_id', ['value' => $ID]);
+            echo Html::hidden('entities_id', ['value' => $ticket->fields['entities_id']]);
             if (Session::haveRight(self::$rightname, CREATE)) {
                echo "<a href='".Toolbox::getItemTypeFormURL(__CLASS__)."?tickets_id=$ID'>";
                echo __('Create a reservation from this ticket', 'geststock');
@@ -1086,10 +1096,10 @@ class PluginGeststockReservation extends CommonDBTM {
 
       $pdf->setColumnsSize(50,50);
       $pdf->displayLine(sprintf(__('%1$s: %2$s'), '<b><i>'.__('Ticket').'</i></b>',
-                                Html::clean(Dropdown::getDropdownName('glpi_tickets',
-                                                                      $this->fields['tickets_id']))),
+                                Toolbox::stripTags(Dropdown::getDropdownName('glpi_tickets',
+                                                                             $this->fields['tickets_id']))),
                         sprintf(__('%1$s: %2$s'), '<b><i>'.__('Status').'</i></b>',
-                                Html::clean(self::getStatusName($this->fields['status']))));
+                                Toolbox::stripTags(self::getStatusName($this->fields['status']))));
 
       $pdf->displayLine(sprintf(__('%1$s: %2$s'), '<b><i>'.__('Delivery date', 'geststock').'</i></b>',
                                 Html::convDateTime($this->fields['date_whished'])),
@@ -1103,7 +1113,7 @@ class PluginGeststockReservation extends CommonDBTM {
                            sprintf(__('%1$s: %2$s'), '<b><i>Numéro de valise </i></b>',
                                    $this->fields['number_tova']),
                            sprintf(__('%1$s: %2$s'), '<b><i>Type de valise </i></b>',
-                                    Html::clean(self::getStatusTova($this->fields['type_tova']))));
+                                    Toolbox::stripTags(self::getStatusTova($this->fields['type_tova']))));
       }
 
       $pdf->setColumnsSize(100);
@@ -1195,8 +1205,9 @@ class PluginGeststockReservation extends CommonDBTM {
                               )
                            )";
       if ($result = $DB->request($query)) {
-         $row = $result->next();
+         foreach ($result as $row) {
             return $row['cpt'];
+         }
       }
          return false;
       }

@@ -20,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2021 GestStock plugin team
+ @copyright Copyright (c) 2017-2022 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -50,7 +50,7 @@ class PluginGeststockConfig extends CommonDBTM {
                      `entities_id_stock` int(11) NULL,
                      `stock_status` int(11) NULL,
                      `transit_status` int(11) NULL,
-                     `date_mod` datetime default NULL,
+                     `date_mod` timestamp NULL DEFAULT NULL,
                      `users_id` int(11) NULL,
                      `criterion` varchar(100) NOT NULL,
                      PRIMARY KEY  (`id`),
@@ -136,9 +136,11 @@ class PluginGeststockConfig extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'><td class='center' colspan='2'>";
       if ($config->getFromDB(1)) {
-         echo "<input type='submit' name='update' value='Modifier' class='submit' ></td>";
+         echo Html::submit(_sx('button', 'Update'), ['name'  => 'update',
+                                                     'class' => 'btn btn-primary']);
       } else {
-         echo "<input type='submit' name='add' value='Ajouter' class='submit' ></td>";
+         echo Html::submit(_sx('button', 'Add'), ['name'  => 'add',
+                                                  'class' => 'btn btn-primary']);
       }
       echo "</td></tr></table>";
       HTML::closeForm();

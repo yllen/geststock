@@ -20,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2021 GestStock plugin team
+ @copyright Copyright (c) 2017-2022 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
  http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -84,20 +84,17 @@ class PluginGeststockSpecification extends CommonDBTM {
        }
        echo "<tr class='tab_bg_1'>";
        echo "<td>".__('Length', 'geststock')."</td><td>";
-       Html::autocompletionTextField($spec, "length",
-                                     ["value" => isset($data['length']) ? $data['length'] : '0']);
+       echo Html::input("length", ["value" => isset($data['length']) ? $data['length'] : '0']);
        echo "&nbsp; cm</td></tr>";
 
        echo "<tr class='tab_bg_1'>";
        echo "<td>".__('Width', 'geststock')."</td><td>";
-       Html::autocompletionTextField($spec, "width",
-                                     ["value" => isset($data['width']) ? $data['width'] : '0']);
+       echo Html::input("width", ["value" => isset($data['width']) ? $data['width'] : '0']);
        echo "&nbsp; cm</td></tr>";
 
        echo "<tr class='tab_bg_1'>";
        echo "<td>".__('Height', 'geststock')."</td><td>";
-       Html::autocompletionTextField($spec, "height",
-                                     ["value" => isset($data['height']) ? $data['height'] : '0']);
+       echo Html::input("height", ["value" => isset($data['height']) ? $data['height'] : '0']);
        echo "&nbsp; cm</td></tr>";
 
        echo "<tr class='tab_bg_1'>";
@@ -114,12 +111,14 @@ class PluginGeststockSpecification extends CommonDBTM {
 
        echo "<tr'><td class='center'>";
        if (isset($data['id'])) {
-         echo "<input type='submit' name='update' value='".__('Update')."' class='submit'>";
-         echo "<input type='hidden' name='id' value='".$data['id']."'>";
+         echo Html::submit(_sx('button', 'Update'), ['name' => 'update',
+                                                     'class' => 'btn btn-primary']);
+         echo Html::hidden('id', ['value' => $data['id']]);
        } else {
-         echo "<input type='submit' name='add' value='".__('Add')."' class='submit'>";
-         echo "<input type='hidden' name='models_id' value='".$item->fields['id']."'>";
-         echo "<input type='hidden' name='itemtype' value='".$type."'>";
+         echo Html::submit(_sx('button', 'Add'), ['name' => 'add',
+                                                  'class' => 'btn btn-primary']);
+         echo Html::hidden('models_id',  ['value' => $item->fields['id']]);
+         echo Html::hidden('itemtype', ['value' => $type]);
        }
        echo "</td></tr>";
        echo "</table>" ;
@@ -144,13 +143,16 @@ class PluginGeststockSpecification extends CommonDBTM {
                      `height` int(11) NULL,
                      `weight` decimal(6,3) NOT NULL DEFAULT '000.000',
                      `volume` float NULL,
-                     `date_mod` datetime DEFAULT NULL,
+                     `date_mod` timestamp NULL DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE `unicity` (`models_id`, `itemtype`)
                   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
           $DB->queryOrDie($query, 'Error in creating glpi_plugin_geststock_specifications'.
                            "<br>".$DB->error());
+      } else {
+         // migration to 2.1.0
+         $mig->changeField($table, 'date_mod', 'date_mod', "timestamp NULL DEFAULT NULL");
       }
     }
 

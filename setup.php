@@ -20,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2021 GestStock plugin team
+ @copyright Copyright (c) 2017-2022 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -80,14 +80,14 @@ function plugin_init_geststock() {
 function plugin_version_geststock() {
 
    return ['name'           => __('Stock gestion', 'geststock'),
-           'version'        => '2.0.0',
+           'version'        => '2.1.0',
            'author'         => 'Nelly Mahu-Lasson',
            'license'        => 'GPLv3+',
            'homepage'       => 'https://github.com/yllen/geststock',
            'page'           => "/front/reservation.php",
-           'minGlpiVersion' => '9.5.3',
-           'requirements'   => ['glpi' => ['min' => '9.5.3',
-                                           'max' => '9.6']]];
+           'minGlpiVersion' => '10.0.3',
+           'requirements'   => ['glpi' => ['min' => '10.0.3',
+                                           'max' => '11.0.0']]];
 }
 
 

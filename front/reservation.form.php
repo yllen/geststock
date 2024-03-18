@@ -20,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2021 GestStock plugin team
+ @copyright Copyright (c) 2017-2022 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -51,8 +51,8 @@ if (isset($_POST["add"])) {
    if (isset($_GET['tickets_id'])) {
       $_POST['tickets_id'] = $_GET['tickets_id'];
    }
-   $newID = $PluginReservation->add($_POST);
-   if ($newID) {
+   if ($newID = $PluginReservation->add($_POST)) {
+
       Event::log($newID, "geststock", 4, "tools",
                  sprintf(__('%1$s adds the item %2$s'), $_SESSION["glpiname"], $newID));
    }

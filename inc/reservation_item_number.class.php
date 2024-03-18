@@ -20,7 +20,7 @@ along with GestStock. If not, see <http://www.gnu.org/licenses/>.
 
 @package   geststock
 @author    Nelly Mahu-Lasson
-@copyright Copyright (c) 2017-2021 GestStock plugin team
+@copyright Copyright (c) 2017-2022 GestStock plugin team
 @license   AGPL License 3.0 or (at your option) any later version
 http://www.gnu.org/licenses/agpl-3.0-standalone.html
 @link
@@ -81,7 +81,7 @@ class PluginGeststockReservation_Item_Number extends CommonDBChild {
                      `locations_id_stock` int(11) NULL,
                      `otherserial` text COLLATE utf8_unicode_ci,
                      `users_id` int(11) NULL,
-                     `date_mod` datetime default NULL,
+                     `date_mod` timestamp NULL DEFAULT NULL,
                      PRIMARY KEY (`id`),
                      KEY `plugin_geststock_reservations_items_id` (`plugin_geststock_reservations_items_id`),
                      KEY `users_id` (users_id),
@@ -90,7 +90,10 @@ class PluginGeststockReservation_Item_Number extends CommonDBChild {
 
          $DB->queryOrDie($query, 'Error in creating glpi_plugin_geststock_reservations_items_numbers'.
                "<br>".$DB->error());
-      }
+      } else {
+         // migration to 2.1.0
+         $mig->changeField($table, 'date_mod', 'date_mod', "timestamp NULL DEFAULT NULL");
+      }      
    }
 
 

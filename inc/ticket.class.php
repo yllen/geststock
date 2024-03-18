@@ -20,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2021 GestStock plugin team
+ @copyright Copyright (c) 2017-2022 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -55,9 +55,10 @@ class PluginGeststockTicket {
                                ['tickets_id' => $ticket->input['id']]) as $resa) {
 
             // no transfert if count items selected <> items reserved
-            $resaid = $resa['id'];
+            $req = $DB->request("glpi_plugin_geststock_reservations_items",
+                                ['plugin_geststock_reservations_id' => $resa['id']]);
 
-            if ($resaitem->getFromDBByCrit(['plugin_geststock_reservations_id' => $resaid])) {
+            if ($req->count())) {
                foreach ($DB->request("glpi_plugin_geststock_reservations_items",
                                      ['plugin_geststock_reservations_id' => $resa['id']]) as $resait) {
                   $resaitid = $resait['id'];

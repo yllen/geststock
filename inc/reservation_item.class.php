@@ -20,7 +20,7 @@
 
  @package   geststock
  @author    Nelly Mahu-Lasson
- @copyright Copyright (c) 2017-2021 GestStock plugin team
+ @copyright Copyright (c) 2017-2022 GestStock plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link
@@ -203,8 +203,9 @@ class PluginGeststockReservation_Item extends CommonDBChild {
          $config->getFromDB(1);
          $entity = $config->fields['entities_id_stock'];
          PluginGeststockReservation::showAllItems("model", 0, 0, $entity);
-         echo "<input type='submit' name='additem' value='".__('Add')."' class='submit'>";
-         echo "<input type='hidden' name='reservations_id' value='$instID'>";
+         echo Html::submit(_sx('button', 'Add'), ['name'  => 'additem',
+                                                  'class' => 'btn btn-primary']);
+         echo Html::hidden('reservations_id', ['value' => $instID]);
          echo "</td></tr>";
          echo "</table>";
          Html::closeForm();
@@ -288,7 +289,7 @@ class PluginGeststockReservation_Item extends CommonDBChild {
       }
 
       $i = $volume = $weight = $totvolume = $totweight = $j = 0;
-      echo "<div class='center'>";
+      echo "<div>";
       if ($canupdate && ($resa->fields['status'] < PluginGeststockReservation::RECEIPT)) {
          Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
          $massiveactionparams = ['container' => 'mass'.__CLASS__.$rand];
@@ -321,8 +322,7 @@ class PluginGeststockReservation_Item extends CommonDBChild {
       $header_end .= "<tr>";
       echo $header_begin.$header_top.$header_end;
 
-      for ($i=0 ; $i < $number ; $i++) {
-         $row = $result->next();
+      foreach ($result as $row) {
          $type = $row['itemtype'];
          if (!($item = $dbu->getItemForItemtype($type))) {
            continue;
@@ -352,7 +352,7 @@ class PluginGeststockReservation_Item extends CommonDBChild {
                                              _n('Stock reservation', 'Stock reservations', 2,
                                                 'geststock')." = ".$resa->getNameID());
 
-               while ($data = $result_linked->next()) {
+               foreach ($result_linked as $data) {
                   $item->getFromDB($data["id"]);
                   Session::addToNavigateListItems($type,$data["id"]);
                   if ($_SESSION["glpiis_ids_visible"] || empty($data["name"])) {
@@ -428,8 +428,8 @@ class PluginGeststockReservation_Item extends CommonDBChild {
 
       if ($canupdate && ($resa->fields['status'] < PluginGeststockReservation::RECEIPT)) {
          echo "<tr class='tab_bg_1'><td colspan='3' class='center'>";
-         echo "<input type='hidden' name='users_id' value='".Session::getLoginUserID()."'>";
-         echo "<input type='hidden' name='reservations_id' value='".$resa->getField('id')."'>";
+         echo Html::hidden('users_id', ['value' => Session::getLoginUserID()]);
+         echo Html::hidden('reservations_id', ['value' => $resa->getField('id')]);
          echo "</td></tr>";
          echo "</table></div>" ;
 
@@ -580,10 +580,12 @@ class PluginGeststockReservation_Item extends CommonDBChild {
       }
       if ($canupdate) {
          echo "<tr class='tab_bg_1'><td></td><td colspan='2' class='center'>";
-         echo "<input type='submit' name='addotherserial' value='".__('Update')."' class='submit'>";
-         echo "</td><td><input type='submit' name='upload' value='".__('Upload files', 'geststock')."'
-                         class='submit'>";
-         echo "<input type='hidden' name='reservations_id' value='$instID'>";
+         echo Html::submit(_sx('button', 'Update'), ['name'  => 'addotherserial',
+                                                     'class' => 'btn btn-primary']);
+         echo "</td><td>";
+         echo Html::submit(__('Upload files', 'geststock'), ['name'  => 'upload',
+                                                             'class' => 'btn btn-primary']);
+         echo Html::hidden('reservations_id', ['value' => $instID]);
          echo "</td></tr>";
       }
       echo "</table>";
@@ -779,7 +781,7 @@ class PluginGeststockReservation_Item extends CommonDBChild {
                                 'addicon'  => false,
                                 'comments' => false]);
             echo "<br><br>\n";
-            echo Html::submit(_x('button', 'Move'), ['name' => 'massiveaction'])."</span>";
+            echo Html::submit(_sx('button', 'Move'), ['name' => 'massiveaction'])."</span>";
             return true;
       }
       return parent::showMassiveActionsSubForm($ma);
@@ -892,8 +894,7 @@ class PluginGeststockReservation_Item extends CommonDBChild {
       if (!$number) {
          $pdf->displayLine(__('No item found'));
       } else {
-         for ($i=0 ; $i < $number ; $i++) {
-            $row = $result->next();
+         foreach ($result as $row) {
             $type = $row['itemtype'];
             if (!($item = $dbu->getItemForItemtype($type))) {
                continue;
@@ -919,7 +920,7 @@ class PluginGeststockReservation_Item extends CommonDBChild {
             $dbu = new DbUtils();
             if ($result_linked = $DB->request($query)) {
                if (count($result_linked)) {
-                  while ($data = $result_linked->next()) {
+                  foreach ($result_linked as $data) {
                      $item->getFromDB($data["id"]);
                      $name = $data["name"];
                      if ($_SESSION["glpiis_ids_visible"] || empty($data["name"])) {
